@@ -65,13 +65,32 @@ const usuarioSchema = new mongoose.Schema({
         default: false
     },
     
-})
+    rotas: [
+	 {
+            _id: { type: mongoose.Schema.Types.ObjectId, ref: 'rotas' },
+            rota: { type: String, required: true, trim: true },
+            ativo: { type: Boolean },
+            verbo_get: { type: Boolean },
+            verbo_put: { type: Boolean },
+            verbo_patch: { type: Boolean },
+            verbo_delete: { type: Boolean },
+            verbo_post: { type: Boolean }
+        }
+    ],
+
+    grupos: [
+        {
+            _id: { type: mongoose.Schema.Types.ObjectId, ref: 'grupos' }
+        }
+    ]
+},     
+    
+);
 
 usuarioSchema.plugin(mongoosePaginate);
 
 const usuarios = mongoose.model('usuarios', usuarioSchema);
 
 export default usuarios;
-
 
 
