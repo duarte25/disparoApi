@@ -39,30 +39,25 @@ const usuarioSchema = new mongoose.Schema({
 
     rfid: {
         type: String,
-        required: true, 
-        default: false 
+         
     },
 
     iris: {
         type: String,
-        required: true, 
-        default: false
+       
     },
 
     digital: {
         type: String,
-        required: true, 
-        default: false
+       
     },
     digital2: {
         type: String,
-        required: true, 
-        default: false
+       
     },
     digital3: {
         type: String,
-        required: true, 
-        default: false
+        
     },
     
 })
