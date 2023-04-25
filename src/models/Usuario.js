@@ -28,7 +28,8 @@ const usuarioSchema = new mongoose.Schema({
         
     link_foto: { 
         type: String, 
-        trim: true 
+        trim: true,
+        index: true,
     },
 
     ativo: { 
@@ -39,24 +40,29 @@ const usuarioSchema = new mongoose.Schema({
 
     rfid: {
         type: String,
+        trim: true
          
     },
 
     iris: {
         type: String,
+        trim: true
        
     },
 
     digital: {
         type: String,
+        trim: true
        
     },
     digital2: {
         type: String,
+        trim: true
        
     },
     digital3: {
         type: String,
+        trim: true
         
     },
     
