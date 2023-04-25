@@ -1,23 +1,16 @@
 import mongoose from "mongoose";
 import mongoosePaginate from 'mongoose-paginate';
 
-const portasSchema = new mongoose.portasSchema(
-    {
-        descricao: { 
-            type: String, 
-            required: true },
-        localidade: { 
-            type: String, 
-            required: true },
-        ativo: { 
-            type: Boolean, 
-            required: true, }
-    },
-
+const portaSchema = new mongoose.Schema({
+    descricao: { type: String, required: true, trim: true, index: true },
+    ambiente: { type: String, required: true, trim: true, index: true },
+    ativo: { type: Boolean, required: true, }
+},
+    { versionKey: false }
 );
 
-portasSchema.plugin(mongoosePaginate);
+portaSchema.plugin(mongoosePaginate);
 
-const portas = mongoose.model('portas', portasSchema);
+const portas = mongoose.model('portas', portaSchema);
 
 export default portas;
