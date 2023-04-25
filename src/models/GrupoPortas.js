@@ -1,26 +1,22 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoosePaginate";
 
-const grupoportasSchema = new mongoose.grupoportasSchema({
-    
-    nome: {
-        type: String, 
-        trim: true, 
-        index: true,
-        required: true
-     },
-    descricao: {
-        type: String,
-        required: true
-     },
-     ativo: {
-        type: Boolean,
-        required: true
-     }
-})
+const grupoPortaSchema = new mongoose.Schema({
+   nome: { type: String, required: true, trim: true, index: true },
+   descricao: { type: String, required: true, trim: true, index: true },
+   ativo: { type: Boolean, required: true },
+   portas: [
+      {
+         _id: { type: mongoose.Schema.Types.ObjectId, ref: "portas", index: true }
+      }
+   ],
+   aberto: { type: Boolean, required: true }
+},
+   { versionKey: false },
+);
 
-grupoportasSchema.plugin(mongoosePaginate);
+grupoPortaSchema.plugin(mongoosePaginate);
 
-const GrupoPortas = mongoose.model('GrupoPortas', grupoportasSchema);
+const grupoPortas = mongoose.model('grupoPortas', grupoPortaSchema);
 
-export default GrupoPortas;
+export default grupoPortas;
