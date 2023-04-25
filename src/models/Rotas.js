@@ -10,7 +10,9 @@ const rotaSchema = new mongoose.Schema({
   verbo_put: { type: Boolean, required: true },
   verbo_patch: { type: Boolean, required: true },
   verbo_delete: { type: Boolean, required: true }
-})
+},
+  { versionKey: false },
+);
 
 rotaSchema.plugin(mongoosePaginate);
 
