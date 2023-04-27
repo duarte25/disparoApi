@@ -86,9 +86,9 @@ const usuarioSchema = new mongoose.Schema({
         }
     ],
 
-    grupoRotas: [
+    grupoUsuarios: [
         {
-            _id: { type: mongoose.Schema.Types.ObjectId, ref: "grupoRotas", index: true }
+            _id: { type: mongoose.Schema.Types.ObjectId, ref: "grupoUsuarios", index: true }
         }
     ]
 },
