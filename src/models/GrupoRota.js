@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
-const grupoRotaSchema = new mongoose.Schema({
+const grupoUsuarioSchema = new mongoose.Schema({
   nome: { type: String, required: true, trim: true, index: true },
   descricao: { type: String, required: true, trim: true, index: true },
   ativo: { type: Boolean, required: true },
@@ -24,8 +24,8 @@ const grupoRotaSchema = new mongoose.Schema({
 
 );
 
-grupoRotaSchema.plugin(mongoosePaginate);
+grupoUsuarioSchema.plugin(mongoosePaginate);
 
-const grupoRotas = mongoose.model("grupoRotas", grupoRotaSchema);
+const grupoUsuarios = mongoose.model("grupoUsuarios", grupoRotaSchema);
 
-export default grupoRotas;
+export default grupoUsuarios;
