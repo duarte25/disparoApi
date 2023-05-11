@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import mongoosePaginate from "mongoosePaginate";
+import mongoosePaginate from "mongoose-paginate-v2"
 
 const grupoPortaSchema = new mongoose.Schema({
    nome: { type: String, required: true, trim: true, index: true },

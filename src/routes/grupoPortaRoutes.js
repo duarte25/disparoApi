@@ -4,4 +4,6 @@ import GrupoPortaController from "../controllers/grupoPortaController.js";
 const router = express.Router();
 
 router
-    .get("/grupoP", GrupoPortaController.listarGrupoPorta)
+    .get("/grupoPortas", GrupoPortaController.listarGrupoPorta)
+
+export default router;

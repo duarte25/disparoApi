@@ -2,15 +2,25 @@ import faker from "faker-br";
 import db from "../config/dbConnect.js";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
-import Rota from "../models/Rota.js";
+import rota from "../models/Rota.js";
+import usuarios from "../models/Usuario.js";
+import grupoPortas from "../models/GrupoPorta.js";
+import grupoUsuarios from "../models/GrupoUsuario.js";
+import portas from "../models/Porta.js";
 import { connectDatabase } from "../app.js";
 
 // Conectar com o banco de dados
 connectDatabase();
 
-// ------------------------------------------
+// Gerar número aleatório
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
-await Rota.deleteMany();
+// ------------------------------------------
+// Rotas Seed
+
+await rota.deleteMany();
 
 const rotas = [];
 
@@ -50,9 +60,37 @@ function seedRotas(qtdrotas) {
 }
 
 seedRotas(rotas_array.length);
-await Rota.collection.insertMany(rotas);
+await rota.collection.insertMany(rotas);
 
 console.log(rotas.length + " Rotas inseridas !");
 
-mongoose.connection.close();
 
+// ------------------------------------------
+
+// Usuario Seed 
+
+await usuarios.deleteMany();
+
+const usuarios = [];
+
+function seedUsuario(qtdusuarios) {
+  const usuarioFixo = {
+    nome: 'Dev oliveira',
+    email: 'dev@gmail.com',
+    senha: senhaHash(),
+    ativo: true,
+    link_foto: faker.image.avatar(),
+    rotas: rotas,
+    grupoUsuarios: grupoUsuarios,
+    grupoPortas: grupoPortas,
+    rfid: "",
+    digital: "",
+    iris: "",
+  }
+  usuarios.push(usuarioFixo);
+
+  
+}
+
+
+mongoose.connection.close();

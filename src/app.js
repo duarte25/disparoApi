@@ -1,6 +1,7 @@
 import express  from "express";
 import cors from "cors";
 import db from "./config/dbConnect.js";
+import routes from "./routes/index.js";
 
 export function connectDatabase() {
   db.on("error", console.log.bind(console, "Conexão com o banco falhou"))
@@ -18,6 +19,6 @@ app.use(express.json());
 
 app.use(cors());
 
-// routes(app);
+routes(app);
 
 export default app;
