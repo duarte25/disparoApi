@@ -1,5 +1,6 @@
 import express  from "express";
-import db from "./config/dbConnect";
+import cors from "cors";
+import db from "./config/dbConnect.js";
 
 export function connectDatabase() {
   db.on("error", console.log.bind(console, "Conexão com o banco falhou"))

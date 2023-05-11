@@ -5,11 +5,7 @@ dotenv.config();
 
 mongoose.set("strictQuery", false)
 
-await mongoose.connect(process.env.DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then((response) => console.log('Conexão com o banco estabelecida !')
-).catch(error => console.log("Erro na conexão com o banco de dados"))
+mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 let db = mongoose.connection;
 

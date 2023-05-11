@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import mongoosePaginate from 'mongoose-paginate';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const portaSchema = new mongoose.Schema({
     descricao: { type: String, required: true, trim: true, index: true },

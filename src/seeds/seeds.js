@@ -1,6 +1,7 @@
 import faker from "faker-br";
 import db from "../config/dbConnect.js";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 import Rota from "../models/Rota.js";
 import { connectDatabase } from "../app.js";
 
@@ -31,7 +32,7 @@ function getRotasName(i) {
 }
 
 function seedRotas(qtdrotas) {
-  for (let index = 0; index < qtdrotas; index++) {
+  for (let i = 0; i < qtdrotas; i++) {
     const rota = {
       rota: getRotasName(i),
       dominio: "localhost",
@@ -52,3 +53,6 @@ seedRotas(rotas_array.length);
 await Rota.collection.insertMany(rotas);
 
 console.log(rotas.length + " Rotas inseridas !");
+
+mongoose.connection.close();
+
