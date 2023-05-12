@@ -20,12 +20,12 @@ const grupoUsuarioSchema = new mongoose.Schema({
   ]
 },
 
-  { versionKey: true }
+  { versionKey: false }
 
 );
 
 grupoUsuarioSchema.plugin(mongoosePaginate);
 
-const grupoUsuarios = mongoose.model("grupoUsuarios", grupoRotaSchema);
+const grupoUsuarios = mongoose.model("grupoUsuarios", grupoUsuarioSchema);
 
 export default grupoUsuarios;

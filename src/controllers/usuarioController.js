@@ -1,6 +1,6 @@
 import usuarios from "../models/Usuario.js";
 import grupoUsuario from "../models/GrupoUsuario.js";
-import grupoPortas from "../models/GrupoPorta.js";
+import grupoPorta from "../models/GrupoPorta.js";
 
 export default class UsuarioController {
   static listarUsuarios = async (req, res) => {
@@ -17,7 +17,6 @@ export default class UsuarioController {
       if (nome) {
         const usuario = await usuarios.paginate({ nome: new RegExp(nome, 'i') }, options);
         let user = JSON.parse(JSON.stringify(usuario));
-        user.grupoUsuarios = await grupoUsuario.find({ _id: { $in: user.grupoUsuarios } }).lean();
 
         for (let i = 0; i < user.docs.length; i++) {
           user.docs[i].grupoUsuarios = await grupoUsuario.find({ _id: { $in: user.docs[i].grupoUsuarios } }).lean();
@@ -32,14 +31,13 @@ export default class UsuarioController {
 
       const usuario = await usuarios.paginate({}, options);
       let user = JSON.parse(JSON.stringify(usuario));
-      user.grupoUsuarios = await grupoUsuario.find({ _id: { $in: user.grupoUsuarios } }).lean();
 
       for (let i = 0; i < user.docs.length; i++) {
         user.docs[i].grupoUsuarios = await grupoUsuario.find({ _id: { $in: user.docs[i].grupoUsuarios } }).lean();
       }
 
       for (let i = 0; i < user.docs.length; i++) {
-        user.docs[i].grupoPortas = await grupoPortas.find({ _id: { $in: user.docs[i].grupoPortas } }).lean();
+        user.docs[i].grupoPortas = await grupoPorta.find({ _id: { $in: user.docs[i].grupoPortas } }).lean();
       }
 
       return res.status(200).json(user);

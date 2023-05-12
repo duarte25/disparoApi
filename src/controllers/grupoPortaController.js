@@ -1,8 +1,7 @@
 import GrupoPorta from "../models/GrupoPorta.js";
 
 export default class GrupoPortaController {
-    //GET - listar Grupo Portas por nome com paginação
-    static listarGrupoPorta = async (req, res) => {
+    static listarGrupoPortas = async (req, res) => {
         try {
             const nome = req.query.nome;
             const descricao = req.query.descricao;
@@ -41,12 +40,11 @@ export default class GrupoPortaController {
             }
 
             const grupoP = await GrupoPorta.paginate({}, option);
-            const resultGrupoPorta = JSON.parser(JSON.stringify(grupoP));
+            const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
             return res.status(200).json(resultGrupoPorta)
 
         } catch (erro) {
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
-
         }
     }
 }

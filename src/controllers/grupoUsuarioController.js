@@ -1,7 +1,7 @@
 import GrupoUsuario from "../models/GrupoUsuario.js"
 
 export default class GrupoUsuarioController {
-    static listaGrupoUsuarios = async (req, res) => {
+    static listarGrupoUsuarios = async (req, res) => {
         try {
             const nome = req.query.nome;
             const descricao = req.query.descricao;
@@ -15,30 +15,30 @@ export default class GrupoUsuarioController {
             }
 
             if (nome) {
-                const grupoUsuarios = GrupoUsuario.paginate({ nome: new RegExp(nome, "i") }, options);
+                const grupoUsuarios = await GrupoUsuario.paginate({ nome: new RegExp(nome, "i") }, options);
                 const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
                 return res.status(200).json(grupoUsuariosResult);
             }
 
             if (descricao) {
-                const grupoUsuarios = GrupoUsuario.paginate({ descricao: new RegExp(descricao, "i") }, options);
+                const grupoUsuarios = await GrupoUsuario.paginate({ descricao: new RegExp(descricao, "i") }, options);
                 const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
                 return res.status(200).json(grupoUsuariosResult);
             }
 
             if (ativo) {
-                const grupoUsuarios = GrupoUsuario.paginate({ ativo: ativo }, options);
+                const grupoUsuarios = await GrupoUsuario.paginate({ ativo: ativo }, options);
                 const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
                 return res.status(200).json(grupoUsuariosResult);
             }
 
             if (nome && descricao) {
-                const grupoUsuarios = GrupoUsuario.paginate({ $and: [{ nome: new RegExp(nome, "i") }, { descricao: new RegExp(descricao, "i") }] }, options);
+                const grupoUsuarios = await GrupoUsuario.paginate({ $and: [{ nome: new RegExp(nome, "i") }, { descricao: new RegExp(descricao, "i") }] }, options);
                 const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
                 return res.status(200).json(grupoUsuariosResult);
             }
 
-            const grupoUsuarios = GrupoUsuario.paginate({}, options);
+            const grupoUsuarios = await GrupoUsuario.paginate({}, options);
             const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
             return res.status(200).json(grupoUsuariosResult);
 

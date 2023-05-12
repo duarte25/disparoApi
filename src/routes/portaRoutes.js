@@ -4,6 +4,6 @@ import PortaController from "../controllers/portaController.js";
 const router = express.Router();
 
 router
-    .get("/portas", PortaController.listarPortas)
+    .get("/portas", PortaController.listarPorta)
 
 export default router;
