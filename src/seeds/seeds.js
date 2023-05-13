@@ -1,7 +1,7 @@
 import faker from "faker-br";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
-import Rota from "../models/Rota.js";
+import Rota from "../models/Porta.js"
 import Usuario from "../models/Usuario.js";
 import GrupoPorta from "../models/GrupoPorta.js";
 import GrupoUsuario from "../models/GrupoUsuario.js";
@@ -70,7 +70,7 @@ console.log(rotas.length + " Rotas inseridas !");
 
 await GrupoUsuario.deleteMany();
 
-const grupoUsuarios = [];
+let grupoUsuarios = [];
 
 
 const grupoUsuarios_array = [
@@ -84,10 +84,10 @@ function getNomeGrupoUsuarios(i) {
 }
 
 function seedGrupoUsuarios(qtdGrupoUsuarios) {
-  for (let i = 0; i < qtdGrupoUsuarios.length; i++) {
+  for (let i = 0; i < qtdGrupoUsuarios; i++) {
     const seedGrupoUsuario = {
       nome: getNomeGrupoUsuarios(i),
-      descricao: faker.lore.sentence(),
+      descricao: faker.lorem.sentence(),
       ativo: true,
       rotas: rotas,
     }
@@ -99,10 +99,11 @@ function seedGrupoUsuarios(qtdGrupoUsuarios) {
 }
 
 seedGrupoUsuarios(grupoUsuarios_array.length);
-await GrupoUsuario.collection.insertMany(grupoUsuarios);
-console.log(grupoUsuarios.length + "Grupos de usuários adicionados !")
 
-// ------------------------------------------------------
+await GrupoUsuario.collection.insertMany(grupoUsuarios);
+console.log(grupoUsuarios.length + " Grupos de usuários adicionados !")
+
+// // ------------------------------------------------------
 
 // Portas seeds
 
@@ -124,18 +125,18 @@ function seedPortas(qtdPortas) {
   for (let i = 0; i < qtdPortas; i++) {
     const seedPorta = {
       descricao: getNomePortas(i),
-      ambiente: faker.random.String(),
+      ambiente: faker.random.words(),
       ativo: true
     }
     portas.push(seedPorta)
   }
 
-  return portas;
+   return portas;
 }
 
 seedPortas(portas_array.length);
-await Porta.collection.insertMany(portas);
-console.log(portas.length + "Portas inseridas!")
+ await Porta.collection.insertMany(portas);
+ console.log(portas.length + " Portas inseridas!")
 
 // ----------------------------------------------------------------
 
@@ -145,18 +146,18 @@ await GrupoPorta.deleteMany();
 
 const grupoPortas = [];
 
-const grupoPortas_array = [
-  "Professores ADS",
-  "Professores Arquitetura",
-  "Professores Matemática"
-]
+ const grupoPortas_array = [
+   "Professores ADS",
+   "Professores Arquitetura",
+   "Professores Matemática"
+ ]
 
-function getNomeGrupoPortas(i) {
-  return grupoPortas_array[i].toString()
-}
+ function getNomeGrupoPortas(i) {
+   return grupoPortas_array[i].toString()
+ }
 
-function seedGrupoPortas(qtdGrupoPortas) {
-  for (let i = 0; i < qtdGrupoPortas; i++) {
+ function seedGrupoPortas(qtdGrupoPortas) {
+   for (let i = 0; i < qtdGrupoPortas; i++) {
 
     const seedGrupoPorta = {
       nome: getNomeGrupoPortas(i),
@@ -173,13 +174,14 @@ function seedGrupoPortas(qtdGrupoPortas) {
 }
 
 seedGrupoPortas(grupoPortas_array.length);
-await GrupoPorta.collection.insertMany(groupDoors);
-console.log(grupoPortas.length + "Grupo de portas adicionados !")
-// --------------------------------------------------------------
+ await GrupoPorta.collection.insertMany(grupoPortas);
+ console.log(grupoPortas.length + " Grupo de portas adicionados !")
 
-// Usuario Seed 
+ // --------------------------------------------------------------
 
-await usuarios.deleteMany();
+ // Usuario Seed 
+
+ await Usuario.deleteMany();
 
 const usuarios = [];
 
@@ -199,7 +201,7 @@ function seedUsuario(qtdusuarios) {
   }
   usuarios.push(usuarioFixo);
 
-  for (let i = 0; index < qtdusuarios; i++) {
+  for (let i = 0; i < qtdusuarios; i++) {
     let nome = faker.name.firstName();
     let nome_meio = faker.name.lastName();
     let sobrenome = faker.name.lastName();
@@ -227,16 +229,14 @@ function seedUsuario(qtdusuarios) {
 
 seedUsuario(20);
 await Usuario.collection.insertMany(usuarios, { ordered: false });
-console.log(usuarios.length + "Usuários inseridos!")
+console.log(usuarios.length + " Usuários inseridos!")
 
 // ------------------------------------------------------------------
 
 // função para encrytar senha usando bcryptjs
 function senhaHash() {
-  return bcrypt.hashSync('123', 8);
+  return bcrypt.hashSync('123', 1);
 }
-
-
 
 // Encerrar a conexão com o banco
 await mongoose.connection.close();

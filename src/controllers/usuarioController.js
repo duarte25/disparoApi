@@ -23,7 +23,7 @@ export default class UsuarioController {
         }
 
         for (let i = 0; i < user.docs.length; i++) {
-          user.docs[i].grupoPortas = await grupoPortas.find({ _id: { $in: user.docs[i].grupoPortas } }).lean();
+          user.docs[i].grupoPortas = await grupoPorta.find({ _id: { $in: user.docs[i].grupoPortas } }).lean();
         }
 
         return res.status(200).json(user);
@@ -32,7 +32,7 @@ export default class UsuarioController {
       const usuario = await usuarios.paginate({}, options);
       let user = JSON.parse(JSON.stringify(usuario));
 
-      for (let i = 0; i < user.docs.length; i++) {
+      for (let i = 0; i < user.docs.lengtheds; i++) {
         user.docs[i].grupoUsuarios = await grupoUsuario.find({ _id: { $in: user.docs[i].grupoUsuarios } }).lean();
       }
 
