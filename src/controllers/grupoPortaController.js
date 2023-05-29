@@ -9,37 +9,38 @@ export default class GrupoPortaController {
             const page = req.query.page;
             const perPage = req.query.perPage;
 
-            const option = { //limitar a quantidade máxima por requisição
+            const options = { //limitar a quantidade máxima por requisição
                 page: parseInt(page) || 1,
                 limit: parseInt(perPage) > 10 ? 10 : parseInt(perPage) || 10
             };
 
+            if (nome && descricao) {
+                const grupoP = await GrupoPorta.paginate({ $and: [{ nome: new RegExp(nome, "i") }, { descricao: new RegExp(descricao, "i") }] }, options);
+                const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
+                return res.status(200).json(resultGrupoPorta);
+            }
+
             if (nome) {
                 //retorno da busca por nome do grupo porta
-                const grupoP = await GrupoPorta.paginate({ nome: new RegExp(nome, "i") }, option);
+                const grupoP = await GrupoPorta.paginate({ nome: new RegExp(nome, "i") }, options);
                 const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
                 return res.status(200).json(resultGrupoPorta);
             }
 
             if (descricao) {
-                const grupoP = await GrupoPorta.paginate({ descricao: new RegExp(descricao, "i") }, option);
+                const grupoP = await GrupoPorta.paginate({ descricao: new RegExp(descricao, "i") }, options);
                 const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
                 return res.status(200).json(resultGrupoPorta);
             }
 
             if (ativo) {
-                const grupoP = await GrupoPorta.paginate({ ativo: ativo }, option);
+                const grupoP = await GrupoPorta.paginate({ ativo: ativo }, options);
                 const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
                 return res.status(200).json(resultGrupoPorta);
             }
 
-            if (nome && descricao) {
-                const grupoP = await GrupoPorta.paginate({ $and: [{ nome: new RegExp(nome, "i") }, { descricao: new RegExp(descricao, "i") }] }, option);
-                const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
-                return res.status(200).json(resultGrupoPorta);
-            }
 
-            const grupoP = await GrupoPorta.paginate({}, option);
+            const grupoP = await GrupoPorta.paginate({}, options);
             const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
             return res.status(200).json(resultGrupoPorta)
 

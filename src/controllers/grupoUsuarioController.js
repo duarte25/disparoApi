@@ -14,6 +14,12 @@ export default class GrupoUsuarioController {
                 limit: parseInt(perPage) || 10 ? 10 : parseInt(perPage) || 10
             }
 
+            if (nome && descricao) {
+                const grupoUsuarios = await GrupoUsuario.paginate({ $and: [{ nome: new RegExp(nome, "i") }, { descricao: new RegExp(descricao, "i") }] }, options);
+                const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
+                return res.status(200).json(grupoUsuariosResult);
+            }
+            
             if (nome) {
                 const grupoUsuarios = await GrupoUsuario.paginate({ nome: new RegExp(nome, "i") }, options);
                 const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
@@ -32,11 +38,6 @@ export default class GrupoUsuarioController {
                 return res.status(200).json(grupoUsuariosResult);
             }
 
-            if (nome && descricao) {
-                const grupoUsuarios = await GrupoUsuario.paginate({ $and: [{ nome: new RegExp(nome, "i") }, { descricao: new RegExp(descricao, "i") }] }, options);
-                const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
-                return res.status(200).json(grupoUsuariosResult);
-            }
 
             const grupoUsuarios = await GrupoUsuario.paginate({}, options);
             const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));

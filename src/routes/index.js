@@ -3,7 +3,7 @@ import usuarios from "./usuarioRoutes.js";
 import portas from "./portaRoutes.js";
 import grupoUsuarios from "./grupoUsuarioRoutes.js";
 import grupoPortas from "./grupoPortaRoutes.js";
-import rotas from "../routes/rotaRoutes.js"
+import rotas from "./rotaRoutes.js";
 
 const routes = (app) => {
   app.route("/").get((req, res) => {
