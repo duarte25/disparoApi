@@ -62,7 +62,7 @@ describe("Testes de integração da model Rota", () => {
       .accept("Content-Type", "application/json")
       .send(body)
       .expect(400);
-    //console.log(dados._body.docs[0])
+      expect(dados._body.message).toEqual("rotas validation failed: rota: Rota é obrigatório")
   })
 
   let id;
@@ -81,6 +81,23 @@ describe("Testes de integração da model Rota", () => {
       .get("/rotas/" + id)
       .accept("Content-Type", "application/json")
       .expect(200);
+      expect(dados._body.rota).toEqual("mateus")
+  })
+
+  it("Deve retornar um erro com código 404, pois passo um ID que não está no banco", async () => {
+    const dados = await request(app)
+      .get("/rotas/645e59a2b784101422b30590")
+      .accept("Content-Type", "application/json")
+      .expect(404);
+      expect(dados._body.message).toEqual("Rota não encontrada")
+  })
+
+  it("Deve retornar um erro com código 400, pois passo um ID inválido", async () => {
+    const dados = await request(app)
+      .get("/rotas/645e59a2b78124512353sdfsd")
+      .accept("Content-Type", "application/json")
+      .expect(400);
+      expect(dados._body.message).toEqual("ID inválido")
   })
 
   it("Deve atualizar a rota mateus, onde passará a ser moraes", async () => {
@@ -92,12 +109,28 @@ describe("Testes de integração da model Rota", () => {
       .accept("Content-Type", "application/json")
       .send(body)
       .expect(200);
+      expect(dados._body.message).toEqual("Rota atualizada com sucesso")
   })
+
+  it("Deve retonar um erro com código 400, pois passo um id inválido no patch", async () => {
+    const body = {
+      rota: "moraes",
+    }
+    const dados = await request(app)
+      .patch("/rotas/rsdgsdr12341asad")
+      .accept("Content-Type", "application/json")
+      .send(body)
+      .expect(400);
+      //console.log(dados._body)
+      //expect(dados._body.message).toEqual("Rota atualizada com sucesso")
+  })
+
 
   it("Deve deletar a rota moraes", async () => {
     const dados = await request(app)
       .delete("/rotas/" + id)
       .accept("Content-Type", "application/json")
       .expect(200);
+      expect(dados._body.message).toEqual("Rota deletada com sucesso")
   })
 })
