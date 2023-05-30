@@ -8,6 +8,7 @@ router
   .get("/rotas/:id", RotaController.listarPorId)
   .post("/rotas", RotaController.cadastrarRota)
   .patch("/rotas/:id", RotaController.atualizarPatch)
+  .put("/rotas/:id", RotaController.atualizarPut)
   .delete("/rotas/:id", RotaController.deletarRota)
 
 export default router;

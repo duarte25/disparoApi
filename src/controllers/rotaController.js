@@ -82,6 +82,26 @@ export default class RotaController {
     }
   }
 
+  static atualizarPut = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const corpo = req.body;
+
+      await Rota.findOneAndReplace({ _id: id }, corpo, { omitUndefined: false }).then((rota) => {
+        if (Object.keys(corpo).length < 1) {
+          return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+        }
+        return res.status(200).json({ message: "Rota atualizada com sucesso" })
+      }).catch((error) => {
+        return res.status(400).json({ message: `Erro ao atualizar rota - ${error.message}` })
+      })
+
+
+    } catch (error) {
+      return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+    }
+  }
+
   static deletarRota = async (req, res) => {
     try {
       const id = req.params.id;
