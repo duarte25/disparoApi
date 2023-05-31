@@ -7,7 +7,7 @@ let server;
 
 describe("Testes de integração da model Rota", () => {
   beforeEach(() => {
-    const port = 3000;
+    const port = 3077;
     server = app.listen(port);
   });
 
@@ -100,12 +100,24 @@ describe("Testes de integração da model Rota", () => {
       expect(dados._body.message).toEqual("ID inválido")
   })
 
-  it("Deve atualizar a rota mateus, onde passará a ser moraes", async () => {
+  it("Deve atualizar a rota mateus utilizando o verbo PATCH, onde passará a ser moraes", async () => {
     const body = {
       rota: "moraes",
     }
     const dados = await request(app)
       .patch("/rotas/" + id)
+      .accept("Content-Type", "application/json")
+      .send(body)
+      .expect(200);
+      expect(dados._body.message).toEqual("Rota atualizada com sucesso")
+  })
+
+  it("Deve atualizar a rota mateus utilizando o verbo PUT, onde passará a ter somente o atributo rota", async () => {
+    const body = {
+      rota: "moraes",
+    }
+    const dados = await request(app)
+      .put("/rotas/" + id)
       .accept("Content-Type", "application/json")
       .send(body)
       .expect(200);
