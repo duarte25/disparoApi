@@ -4,6 +4,7 @@ import portas from "./portaRoutes.js";
 import grupoUsuarios from "./grupoUsuarioRoutes.js";
 import grupoPortas from "./grupoPortaRoutes.js";
 import rotas from "./rotaRoutes.js";
+import login from "./loginRoutes.js";
 
 const routes = (app) => {
   app.route("/").get((req, res) => {
@@ -16,7 +17,8 @@ const routes = (app) => {
     portas,
     grupoUsuarios,
     grupoPortas,
-    rotas
+    rotas,
+    login
   )
 
 }
