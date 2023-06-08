@@ -91,11 +91,10 @@ export default class RotaController {
         if (Object.keys(corpo).length < 1) {
           return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
         }
-        return res.status(200).json({ message: "Rota atualizada com sucesso" })
+        return res.status(200).json({ message: "Rota Atualizada com sucesso" })
       }).catch((error) => {
         return res.status(400).json({ message: `Erro ao atualizar rota - ${error.message}` })
       })
-
 
     } catch (error) {
       return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })

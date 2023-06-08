@@ -20,7 +20,7 @@ const AuthMiddleware = async (req, res, next) => {
     }
 
   } catch (error) {
-    return res.status(500).json({ error: true, code: 500, message: "Token inválido!" });
+    return res.status(500).json({ error: true, code: 498, message: "Token inválido!" });
   }
 }
 
