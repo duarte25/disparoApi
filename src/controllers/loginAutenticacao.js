@@ -24,25 +24,23 @@ export default class LoginController {
       user.grupoUsuarios = await grupoUsuarios.find({ _id: { $in: user.grupoUsuarios } }).lean();
       user.grupoPortas = await grupoPortas.find({ _id: { $in: user.grupoPortas } }).lean();
 
-      return res.status(200).json([
-        {
-          token: jwt.sign({
-            id: userExist.id,
-            nome: userExist.nome,
-            email: userExist.email,
-            ativo: userExist.ativo
-          }, process.env.SECRET, { expiresIn: process.env.EXPIREIN }),
-          user: {
-            id: userExist._id,
-            nome: userExist.nome,
-            email: userExist.email,
-            ativo: userExist.ativo,
-            rotas: userExist.rotas,
-            grupoUsuarios: user.grupoUsuarios,
-            grupoPortas: user.grupoPortas
-          }
+      return res.status(200).json({
+        token: jwt.sign({
+          id: userExist.id,
+          nome: userExist.nome,
+          email: userExist.email,
+          ativo: userExist.ativo
+        }, process.env.SECRET, { expiresIn: process.env.EXPIREIN }),
+        user: {
+          id: userExist._id,
+          nome: userExist.nome,
+          email: userExist.email,
+          ativo: userExist.ativo,
+          rotas: userExist.rotas,
+          grupoUsuarios: user.grupoUsuarios,
+          grupoPortas: user.grupoPortas
         }
-      ])
+      })
     } catch (error) {
       return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
     }

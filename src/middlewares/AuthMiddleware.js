@@ -11,16 +11,16 @@ const AuthMiddleware = async (req, res, next) => {
 
     const [, token] = auth.split(" ");
 
-    const decoded = await promisify(jwt.verify)(token, process.env.SECRET);
+    jwt.verify(token, process.env.SECRET, (error, decoded) => {
+      if (error) {
+        return res.status(498).json([{ error: true, code: 498, message: "Token expirado!" }])
+      }
 
-    if (!decoded) {
-      return res.status(498).json([{ error: true, code: 498, message: "Token expirado!" }])
-    } else {
       next();
-    }
+    })
 
   } catch (error) {
-    return res.status(500).json({ error: true, code: 498, message: "Token inválido!" });
+    return res.status(498).json({ error: true, code: 498, message: "Token inválido!" });
   }
 }
 

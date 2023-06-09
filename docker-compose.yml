@@ -1,11 +1,11 @@
 version: '3.8'
 services:
   api:
-  build: .
-  ports:
-    - 3032:3032
-  enviroment:
-    - DB_URL=mongodb+srv://mateusmoraes123:123@primeiro-mongo.n1gqj7p.mongodb.net/fechadura-inteligente
-    - PORT=3032
-    - SECRET=mateusmoraessilva
-    - EXPIREIN=5m
+    build: .
+    ports:
+      - 3032:3032
+    environment:
+      - DB_URL=mongodb+srv://mateusmoraes123:123@primeiro-mongo.n1gqj7p.mongodb.net/fechadura-inteligente
+      - PORT=3032
+      - SECRET=mateusmoraessilva
+      - EXPIREIN=1m
