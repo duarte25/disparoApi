@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { promisify } from "util";
 
 const AuthMiddleware = async (req, res, next) => {
   try {

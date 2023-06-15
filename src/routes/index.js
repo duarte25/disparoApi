@@ -11,7 +11,7 @@ import login from "./loginRoutes.js";
  * @swagger
  * components:
  *  schemas:
- *      Rota:
+ *       Rota:
  *          type: object
  *          properties:
  *      Usuario:
@@ -24,6 +24,7 @@ import login from "./loginRoutes.js";
  *          type: object    
  * 
  */
+
 
 const routes = (app) => {
   app.route("/").get((req, res) => {

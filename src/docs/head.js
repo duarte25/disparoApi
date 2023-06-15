@@ -31,7 +31,7 @@ const swaggerOptions = {
           description: "Login do usuário"
         },
         {
-          name: "Usuários",
+          name: "Usuarios",
           description: "Usuários cadastrados no sistema"
         },
         {
@@ -43,11 +43,11 @@ const swaggerOptions = {
           description: "Rotas cadastradas no sistema"
         },
         {
-          name: "Grupo de Usuários",
+          name: "GrupoUsuarios",
           description: "Grupo de usuários cadastrados no sistema"
         },
         {
-          name: "Grupo de Portas",
+          name: "GrupoPortas",
           description: "Grupo de portas cadastrados no sistema"
         }
       ],
