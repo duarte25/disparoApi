@@ -91,7 +91,7 @@ export default class RotaController {
         if (Object.keys(corpo).length < 1) {
           return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
         }
-        return res.status(200).json({ message: "Rota Atualizada com sucesso" })
+        return res.status(200).json({ message: "Rota atualizada com sucesso" })
       }).catch((error) => {
         return res.status(400).json({ message: `Erro ao atualizar rota - ${error.message}` })
       })

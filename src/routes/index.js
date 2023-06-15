@@ -6,9 +6,28 @@ import grupoPortas from "./grupoPortaRoutes.js";
 import rotas from "./rotaRoutes.js";
 import login from "./loginRoutes.js";
 
+// Aqui vai estar todos os componentes para utilizar no Swagger.
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      Rota:
+ *          type: object
+ *          properties:
+ *      Usuario:
+ *          type: object
+ *      Porta:
+ *          type: object
+ *      GrupoUsuarios:
+ *          type: object
+ *      GrupoPortas:
+ *          type: object    
+ * 
+ */
+
 const routes = (app) => {
   app.route("/").get((req, res) => {
-    res.status(200).json({ message: "Bem vindo a API - Fechadura Inteligente <3" })
+    res.status(200).redirect("/docs");
   })
 
   app.use(

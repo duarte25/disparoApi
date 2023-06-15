@@ -1,6 +1,6 @@
 FROM node:20-alpine
 WORKDIR /api-fechadura-inteligente
-EXPOSE 3032
+EXPOSE 3037
 COPY . .
 RUN npm install
 ENTRYPOINT npm run dev
