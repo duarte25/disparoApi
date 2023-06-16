@@ -6,7 +6,7 @@ export default class RotaController {
   static listarRotas = async (req, res) => {
     try {
 
-      await AuthPermission.verifyPermission("rotas", "get", req,res)
+      await AuthPermission.verifyPermission("rotas", "get", req,res);
 
       const rota = req.query.rota;
       const page = req.query.page;
