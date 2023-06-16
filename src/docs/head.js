@@ -21,7 +21,7 @@ const swaggerOptions = {
       },
       servers: [
         {
-          url: `http://localhost:3037`,
+          url: `http://localhost:${process.env.PORT}`,
           description: "API em desenvolvimento no FSLab - Turma 2022"
         }
       ],

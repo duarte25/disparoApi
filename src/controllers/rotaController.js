@@ -1,9 +1,13 @@
+import AuthPermission from "../middlewares/AuthPermission.js";
 import Rota from "../models/Rota.js";
 
 export default class RotaController {
 
   static listarRotas = async (req, res) => {
     try {
+
+      await AuthPermission.verifyPermission("rotas", "get", req,res)
+
       const rota = req.query.rota;
       const page = req.query.page;
       const perPage = req.query.perPage;
