@@ -51,13 +51,13 @@ const usuarioSchema = new mongoose.Schema({
     },
 
     digital: [
-    {
-        type: String,
-        trim: true
-        
+        {
+            digital: { type: String, trim: true }
         }
+
+
     ],
-    
+
 
     rotas: [
         {

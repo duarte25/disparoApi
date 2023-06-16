@@ -42,13 +42,13 @@ const router = express.Router();
  *                  docs:
  *                    type: array
  *                    items:
- *                      $ref: '#/components/schemas/rota'
+ *                      $ref: '#/components/schemas/Usuario'
  *                  totalDocs:
  *                    type: integer
  *                  limit:
  *                    type: integer
  *                  totalPages:
- *                    type: integer,
+ *                    type: integer
  *                  page:
  *                    type: integer
  *                  pagingCounter:
