@@ -3,10 +3,10 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 const usuarioSchema = new mongoose.Schema({
     nome: { type: String, minlength: 4, maxlength: 200, required: [true, 'Nome é obrigatório.'] },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true, match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/ },
-    senha: { type: String, minlength: 8, trim: true, required: true, select: false },
+    email: { type: String, required: [true, 'Email é obrigatório.'], unique: true, lowercase: true, trim: true, match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/ },
+    senha: { type: String, minlength: 8, trim: true, required: [true, 'Senha é obrigatório.'], select: false },
     link_foto: { type: String, trim: true, index: true, },
-    ativo: { type: Boolean, required: true, default: false },
+    ativo: { type: Boolean, required: [true, 'Ativo é obrigatório.'], default: false },
     rfid: { type: String, trim: true },
     iris: { type: String, trim: true },
     digital: [

@@ -48,4 +48,91 @@ export default class GrupoPortaController {
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
         }
     }
+
+    static listarGrupoPortaId = async (req, res) => {
+        try {
+            const id = req.params.id;
+
+            await GrupoPorta.findById(id).then((grupoP) => {
+                if (grupoP) {
+                    return res.status(200).send(grupoP.toJSON());
+                } else {
+                    return res.status(404).json({ error: true, code: 404, message: "Grupo Porta não encontrada" })
+                }
+            }).catch((error) => {
+                return res.status(400).json({ error: true, code: 400, message: "ID inválido!" })
+            })
+
+        } catch (erro) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
+
+    static cadastrarGrupoPorta = async (req, res) => {
+        try {
+            const grupoP = new GrupoPorta(req.body);
+
+            await grupoP.save().then((grupoP) => {
+                return res.status(201).send(grupoP.toJSON());
+
+            }).catch((error) => {
+                return res.status(400).json({ message: error.message })
+            })
+
+        } catch (error) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
+
+    static atualizarPatch = async (req, res) => {
+        try {
+            const id = req.params.id;
+            const corpo = req.body;
+
+            await GrupoPorta.findByIdAndUpdate(id, corpo).then((grupoP) => {
+                if (Object.keys(corpo).length < 1) {
+                    return res.status(400).json({ messagem: "Não existe dados para ser atualizado" })
+                }
+                return res.status(200).json({ message: "Grupo Porta atualizada com sucesso!" })
+            }).catch((error) => {
+                return res.status(400).json({ message: `Erro ao atualizar - ${error.message}` })
+            })
+
+        } catch (error) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
+
+    static atualizarPut = async (req, res) => {
+        try {
+            const id = req.params.id;
+            const corpo = req.body;
+
+            await GrupoPorta.findOneAndReplace({ _id: id }, corpo, { omitUndefined: false }).then((grupoP) => {
+                if (Object.keys(corpo).length < 1) {
+                    return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+                }
+                return res.status(200).json({ message: "Grupo Porta atualizada com sucesso" })
+            }).catch((error) => {
+                return res.status(400).json({ message: `Erro ao atualizar Grupo Porta - ${error.message}` })
+            })
+
+        } catch (error) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
+
+    static deletarGrupoPorta = async (req, res) => {
+        try {
+            const id = req.params.id;
+
+            await GrupoPorta.findByIdAndDelete(id).then((grupoP) => {
+                return res.status(200).json({ message: "Grupo Porta deletado com sucesso" })
+            }).catch((error) => {
+                return res.status(400).json({ message: "Erro ao deletar o Grupo Porta" })
+            })
+        } catch (error) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
 }
