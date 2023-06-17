@@ -6,7 +6,9 @@ export default class RotaController {
   static listarRotas = async (req, res) => {
     try {
 
-      await AuthPermission.verifyPermission("rotas", "get", req,res);
+      if (await AuthPermission.verifyPermission("rotas", "get", req,res) !== false) {
+        return;
+      } 
 
       const rota = req.query.rota;
       const page = req.query.page;
@@ -24,11 +26,12 @@ export default class RotaController {
         return res.status(200).send(rotasJson);
       }
 
-      const rotas = await Rota.paginate({}, options);
+      const rotas = await Rota.paginate({ }, options);
       const rotasJson = JSON.parse(JSON.stringify(rotas));
       return res.status(200).send(rotasJson);
 
     } catch (erro) {
+      console.log(erro)
       return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
     }
   }

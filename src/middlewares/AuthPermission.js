@@ -24,7 +24,7 @@ const pegaToken = async (req, res) => {
 
 class AuthPermission {
   static verifyPermission = async (rota_acessada, verbo, req, res) => {
-    falhas.length = 0;
+    falhas = [];
 
     const usuario = await Usuarios.findById(await pegaToken(req, res));
 
@@ -56,8 +56,8 @@ class AuthPermission {
         if (user.rotas[i].ativo) {
           if (user.rotas[i]["verbo_" + verbo]) {
             try {
-              falhas.length = 0;
-              return;
+              falhas = [];
+              return false;
             } catch (error) {
               console.error(error);
               return res.status(500).json([{ code: 500, message: "Erro interno do servidor: Falha de retorno de chamada (callback)" }]);
@@ -79,8 +79,8 @@ class AuthPermission {
             if (user.grupoUsuarios[i].rotas[j].ativo) {
               if (user.grupoUsuarios[i].rotas[j]["verbo_" + verbo]) {
                 try {
-                  falhas.length = 0;
-                  return;
+                  falhas = [];
+                  return false;
                 } catch (error) {
                   console.error(error);
                   return res.status(500).json([{ code: 500, message: "Erro interno do servidor: Callback fail" }])
@@ -96,7 +96,7 @@ class AuthPermission {
       }
     }
     
-    if (falhas.length) {
+    if (falhas.length > 0) {
       return res.status(401).json(falhas);
     }
 
