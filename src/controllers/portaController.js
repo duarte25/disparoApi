@@ -28,7 +28,7 @@ export default class PortaController {
             }
 
             if (ativo) {
-                const portas = await Porta.paginate({ ativo: ativo }, option);
+                const porta = await Porta.paginate({ ativo: ativo }, option);
                 const resultPortas = JSON.parse(JSON.stringify(porta));
                 return res.status(200).json(resultPortas);
             }
@@ -44,8 +44,92 @@ export default class PortaController {
             return res.status(200).json(resultPortas);
 
         } catch (erro) {
-            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
-
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
         }
     }
+
+    static listarPortaPorId = async (req, res) => {
+        try {
+            const id = req.params.id;
+            await Porta.findById(id).then((portas) => {
+                if (portas) {
+                    return res.status(200).send(portas.toJSON());
+                } else {
+                    return res.status(404).json({ error: true, code: 404, message: "Id da porta não localizado." })
+                }
+            }).catch((error) => {
+                return res.status(400).json({ error: true, code: 400, message: "id invalido" })
+            })
+        } catch (error) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
+        }
+    }
+
+    static cadastrarPorta = async (req, res) => {
+        try {
+            const porta = new Porta(req.body);
+
+            await porta.save().then((porta) => {
+                return res.status(201).send(porta.toJSON())
+            }).catch((error) => {
+                return res.status(404).json({ message: error.message })
+            })
+
+        } catch (erro) {
+            return res.status(500).json({ erro: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
+
+    static atualizarPatch = async (req, res) => {
+        try {
+            const id = req.params.id;
+            const corpo = req.body;
+
+            await Porta.findByIdAndUpdate(id, corpo).then((porta) => {
+                if (Object.keys(corpo).length < 1) {
+                    return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+                }
+                return res.status(200).json({ message: "Porta atualizada com sucesso" })
+            }).catch((error) => {
+                return res.status(400).json({ message: `Erro ao atualizar Porta - ${error.message}` })
+            })
+
+        } catch (error) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
+
+    static atualizarPut = async (req, res) => {
+        try {
+            const id = req.params.id;
+            const corpo = req.body;
+
+            await Porta.findOneAndReplace({ _id: id }, corpo, { omitUndefined: false }).then((porta) => {
+                if (Object.keys(corpo).length < 1) {
+                    return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+                }
+                return res.status(200).json({ message: "Porta atualizada com sucesso" })
+            }).catch((error) => {
+                return res.status(400).json({ message: `Erro ao atualizar porta - ${error.message}` })
+            })
+        } catch (error) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
+
+    static deletePorta = async (req, res) => {
+        try {
+            const id = req.params.id;
+
+            await Porta.findByIdAndDelete(id).then((porta) => {
+                return res.status(200).json({ message: "Porta deletada com sucesso" })
+            }).catch((error) => {
+                return res.status(400).json({ message: "Erro ao deletar a porta" })
+            })
+
+        } catch (error) {
+            return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+        }
+    }
+
 }

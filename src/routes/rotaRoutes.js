@@ -42,7 +42,7 @@ const router = express.Router();
  *                  docs:
  *                    type: array
  *                    items:
- *                      $ref: '#/components/schemas/Usuario'
+ *                      $ref: '#/components/schemas/Rota'
  *                  totalDocs:
  *                    type: integer
  *                  limit:

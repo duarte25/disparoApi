@@ -9,7 +9,7 @@ export default class RotaController {
       if (await AuthPermission.verifyPermission("rotas", "get", req,res) !== false) {
         return;
       } 
-
+      
       const rota = req.query.rota;
       const page = req.query.page;
       const perPage = req.query.perPage;

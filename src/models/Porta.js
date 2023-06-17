@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const portaSchema = new mongoose.Schema({
-    descricao: { type: String, required: true, trim: true, index: true },
-    ambiente: { type: String, required: true, trim: true, index: true },
-    ativo: { type: Boolean, required: true, }
+    descricao: { type: String, required: [true, "Descrição é obrigatório"], trim: true, index: true },
+    ambiente: { type: String, required: [true, "Ambiente é obrigatório"], trim: true, index: true },
+    ativo: { type: Boolean, required: [true, "Ativo é obrigatório"] }
 },
     { versionKey: false }
 );
