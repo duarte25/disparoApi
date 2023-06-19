@@ -16,7 +16,7 @@ export default class LoginController {
       }
 
       if (!userExist.ativo) {
-        return res.status(400).json([{ code: 400, message: "Usuário inativo!" }])
+        return res.status(403).json([{ code: 403, message: "Usuário inativo!" }])
       }
 
       const user = JSON.parse(JSON.stringify(userExist));

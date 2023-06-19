@@ -15,51 +15,50 @@ const swaggerOptions = {
         name: "Licença GPLv3",
         url: "http://www.gnu.org/licenses/gpl-3.0.html"
       },
-      externalDocs: {
-        description: "Documentação detalhada",
-        url: "https://gitlab.fslab.dev/fs-ii-turma-2022-fechadura/fechadura-back-end"
+    },
+    externalDocs: {
+      description: "Documentação detalhada",
+      url: "https://gitlab.fslab.dev/fs-ii-turma-2022-fechadura/fechadura-back-end"
+    },
+    servers: [
+      {
+        url: `http://localhost:${process.env.PORT}`,
+        description: "API Fechadura Inteligente - Turma 2022"
+      }
+    ],
+    tags: [
+      {
+        name: "Login",
+        description: "Login do usuário"
       },
-      servers: [
-        {
-          url: `http://localhost:${process.env.PORT}`,
-          description: "API em desenvolvimento no FSLab - Turma 2022"
-        }
-      ],
-      tags: [
-        {
-          name: "Login",
-          description: "Login do usuário"
-        },
-        {
-          name: "Usuarios",
-          description: "Usuários cadastrados no sistema"
-        },
-        {
-          name: "Portas",
-          description: "Portas cadastradas no sistema"
-        },
-        {
-          name: "Rotas",
-          description: "Rotas cadastradas no sistema"
-        },
-        {
-          name: "GrupoUsuarios",
-          description: "Grupo de usuários cadastrados no sistema"
-        },
-        {
-          name: "GrupoPortas",
-          description: "Grupo de portas cadastrados no sistema"
-        }
-      ],
-      paths: {},
-      components: {
-        securityShemes: {
-          bearerAuth: {
-            type: "http",
-            scheme: "bearer",
-            bearerFormat: "JWT",
-            in: "header"
-          }
+      {
+        name: "Usuarios",
+        description: "Usuários do sistema"
+      },
+      {
+        name: "Portas",
+        description: "Portas do sistema"
+      },
+      {
+        name: "Rotas",
+        description: "Rotas do sistema"
+      },
+      {
+        name: "Grupo de Usuarios",
+        description: "Grupo de usuários do sistema"
+      },
+      {
+        name: "Grupo de Portas",
+        description: "Grupo de portas do sistema"
+      }
+    ],
+    paths: {},
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
         }
       }
     }
