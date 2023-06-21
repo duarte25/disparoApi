@@ -8,4 +8,4 @@ services:
       - DB_URL=mongodb+srv://mateusmoraes123:123@primeiro-mongo.n1gqj7p.mongodb.net/fechadura-inteligente
       - PORT=3037
       - SECRET=mateusmoraessilva
-      - EXPIREIN=1m
+      - EXPIREIN=1h

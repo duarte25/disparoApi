@@ -5,10 +5,11 @@ import mongoose from 'mongoose';
 
 let server;
 let token;
+let idporta;
 
 describe("Testes de integração da model Porta", () => {
   beforeEach(() => {
-    const port = 3079;
+    const port = 3002;
     server = app.listen(port);
   });
 
@@ -32,7 +33,7 @@ describe("Testes de integração da model Porta", () => {
 
     token = dados._body.token;
 
-    expect(dados._body.user.nome).toEqual("mateus oliveira");
+    expect(dados._body.user.nome).toEqual("Dev oliveira");
     expect(token).toEqual(dados._body.token);
 
   })
@@ -44,10 +45,19 @@ describe("Testes de integração da model Porta", () => {
       .set("Authorization", `Bearer ${token}`)
       .expect(200)
     //console.log(dados._body.doc[0])
-    expect(dados._body.docs[0].ambiente).toEqual("digital Tocantins Orquestrador")
+    expect(dados._body.docs[0].descricao).toEqual("FSLab")
   })
 
-  let idporta;
+  it("Deve retornar uma porta válida do banco de dados e realizar a busca por query de descrição", async () => {
+    const dados = await request(app)
+      .get("/portas?descricao=FSLab")
+      .accept("Content-Type", "application/json")
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200)
+    //console.log(dados._body.doc[0])
+    expect(dados._body.docs[0].descricao).toEqual("FSLab")
+  })
+
   it("Deve cadastrar uma porta no banco de dados", async () => {
     const body = {
       descricao: "ADM",
@@ -67,7 +77,6 @@ describe("Testes de integração da model Porta", () => {
 
   it("Deve retornar um erro pois não está sendo passado um campo obrigatório", async () => {
     const body = {
-      descricao: "",
       ambiente: "Secretaria",
       ativo: "true"
     }
@@ -78,10 +87,8 @@ describe("Testes de integração da model Porta", () => {
       .set("Authorization", `Bearer ${token}`)
       .send(body)
       .expect(404)
-    expect(dados._body.message).toEqual("portas validation failed: descricao: Path `descricao` is required.")
+    expect(dados._body.message).toEqual("portas validation failed: descricao: Descrição é obrigatório")
   })
-
-  let id;
 
   it("Deve retornar uma busca no banco de dados feito pela descrição da porta Secretaria", async () => {
     const dados = await request(app)
@@ -89,8 +96,6 @@ describe("Testes de integração da model Porta", () => {
       .accept("Content-Type", "application/json")
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
-
-    id = dados._body.docs[0]._id;
   })
 
   it("Deve realizar uma busca por id da porta Secretaria", async () => {

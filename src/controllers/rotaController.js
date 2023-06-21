@@ -24,11 +24,11 @@ export default class RotaController {
         const rotas = await Rota.paginate({ rota: new RegExp(rota, "i") }, options);
         const rotasJson = JSON.parse(JSON.stringify(rotas));
         return res.status(200).send(rotasJson);
+      } else {
+        const rotas = await Rota.paginate({ }, options);
+        const rotasJson = JSON.parse(JSON.stringify(rotas));
+        return res.status(200).send(rotasJson);
       }
-
-      const rotas = await Rota.paginate({ }, options);
-      const rotasJson = JSON.parse(JSON.stringify(rotas));
-      return res.status(200).send(rotasJson);
 
     } catch (erro) {
       console.log(erro)
@@ -89,8 +89,9 @@ export default class RotaController {
       await Rota.findByIdAndUpdate(id, corpo).then((rota) => {
         if (Object.keys(corpo).length < 1) {
           return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+        } else {
+          return res.status(200).json({ message: "Rota atualizada com sucesso" })
         }
-        return res.status(200).json({ message: "Rota atualizada com sucesso" })
       }).catch((error) => {
         return res.status(400).json({ message: `Erro ao atualizar rota - ${error.message}` })
       })
@@ -111,8 +112,9 @@ export default class RotaController {
       await Rota.findOneAndReplace({ _id: id }, corpo, { omitUndefined: false }).then((rota) => {
         if (Object.keys(corpo).length < 1) {
           return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+        } else {
+          return res.status(200).json({ message: "Rota atualizada com sucesso" })
         }
-        return res.status(200).json({ message: "Rota atualizada com sucesso" })
       }).catch((error) => {
         return res.status(400).json({ message: `Erro ao atualizar rota - ${error.message}` })
       })

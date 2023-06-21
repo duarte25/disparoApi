@@ -9,7 +9,7 @@ describe("Testes de integração da model Rota", () => {
   let token;
 
   beforeEach(() => {
-    const port = 3077;
+    const port = 3003;
     server = app.listen(port);
   });
 
@@ -33,7 +33,7 @@ describe("Testes de integração da model Rota", () => {
 
     token = dados._body.token;
   
-  expect(dados._body.user.nome).toEqual("mateus oliveira");
+  expect(dados._body.user.nome).toEqual("Dev oliveira");
   expect(token).toEqual(dados._body.token);
 
   })

@@ -6,9 +6,9 @@ import AuthPermission from "../middlewares/AuthPermission.js"
 export default class UsuarioController {
   static listarUsuarios = async (req, res) => {
     try {
-      if (await AuthPermission.verifyPermission("usuarios", "get", req,res) !== false) {
+      if (await AuthPermission.verifyPermission("usuarios", "get", req, res) !== false) {
         return;
-      } 
+      }
       const nome = req.query.nome;
       const page = req.query.page;
       const perPage = req.query.perPage;
@@ -31,20 +31,21 @@ export default class UsuarioController {
         }
 
         return res.status(200).json(user);
+      } else {
+        const usuario = await usuarios.paginate({}, options);
+        let user = JSON.parse(JSON.stringify(usuario));
+
+        for (let i = 0; i < user.docs.length; i++) {
+          user.docs[i].grupoUsuarios = await grupoUsuario.find({ _id: { $in: user.docs[i].grupoUsuarios } }).lean();
+        }
+
+        for (let i = 0; i < user.docs.length; i++) {
+          user.docs[i].grupoPortas = await grupoPorta.find({ _id: { $in: user.docs[i].grupoPortas } }).lean();
+        }
+
+        return res.status(200).json(user);
       }
 
-      const usuario = await usuarios.paginate({}, options);
-      let user = JSON.parse(JSON.stringify(usuario));
-
-      for (let i = 0; i < user.docs.length; i++) {
-        user.docs[i].grupoUsuarios = await grupoUsuario.find({ _id: { $in: user.docs[i].grupoUsuarios } }).lean();
-      }
-
-      for (let i = 0; i < user.docs.length; i++) {
-        user.docs[i].grupoPortas = await grupoPorta.find({ _id: { $in: user.docs[i].grupoPortas } }).lean();
-      }
-
-      return res.status(200).json(user);
     }
     catch (error) {
       console.log(error)
@@ -54,9 +55,9 @@ export default class UsuarioController {
 
   static listarUsuarioPorId = async (req, res) => {
     try {
-      if (await AuthPermission.verifyPermission("usuarios:id", "get", req,res) !== false) {
+      if (await AuthPermission.verifyPermission("usuarios:id", "get", req, res) !== false) {
         return;
-      } 
+      }
       const id = req.params.id;
 
       await usuarios.findById(id).then((usuario) => {
@@ -78,9 +79,9 @@ export default class UsuarioController {
 
   static cadastrarUsuario = async (req, res) => {
     try {
-      if (await AuthPermission.verifyPermission("usuarios", "post", req,res) !== false) {
+      if (await AuthPermission.verifyPermission("usuarios", "post", req, res) !== false) {
         return;
-      } 
+      }
       const usuario = new usuarios(req.body);
 
       await usuario.save().then((usuario) => {
@@ -97,18 +98,18 @@ export default class UsuarioController {
 
   static atualizarPatch = async (req, res) => {
     try {
-      if (await AuthPermission.verifyPermission("usuarios:id", "patch", req,res) !== false) {
+      if (await AuthPermission.verifyPermission("usuarios:id", "patch", req, res) !== false) {
         return;
-      } 
+      }
       const id = req.params.id;
       const corpo = req.body;
 
       await usuarios.findByIdAndUpdate(id, corpo).then(() => {
         if (Object.keys(corpo).length < 1) {
           return res.status({ message: "Nenhum dado a ser atualizado" })
+        } else {
+          return res.status(200).json({ message: "Usuário atualizado com sucesso" })
         }
-        return res.status(200).json({ message: "Usuário atualizado com sucesso" })
-
       }).catch((error) => {
         return res.status(400).json({ message: `Erro ao atualizar usuário - ${error.message}` })
 
@@ -121,17 +122,18 @@ export default class UsuarioController {
 
   static atualizarPut = async (req, res) => {
     try {
-      if (await AuthPermission.verifyPermission("usuarios:id", "put", req,res) !== false) {
+      if (await AuthPermission.verifyPermission("usuarios:id", "put", req, res) !== false) {
         return;
-      } 
+      }
       const id = req.params.id;
       const corpo = req.body;
 
       await usuarios.findByOneAndReplace({ _id: id }, corpo, { omitUndefined: false }).then((usuario) => {
         if (Object.keys(corpo).length < 1) {
           return res.status({ message: "Nenhum dado a ser atualizado" })
+        } else {
+          return res.status(200).json({ message: "Usuário atualizado com sucesso" })
         }
-        return res.status(200).json({ message: "Usuário atualizado com sucesso" })
       }).catch((error) => {
         return res.status(400).json({ message: `Erro ao atualizar usuário - ${error.message}` })
       })
@@ -144,9 +146,9 @@ export default class UsuarioController {
 
   static deletarUsuario = async (req, res) => {
     try {
-      if (await AuthPermission.verifyPermission("usuarios:id", "delete", req,res) !== false) {
+      if (await AuthPermission.verifyPermission("usuarios:id", "delete", req, res) !== false) {
         return;
-      } 
+      }
       const id = req.params.id;
 
       await usuarios.findByIdAndDelete(id).then((usuario) => {

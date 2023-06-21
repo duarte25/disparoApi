@@ -73,7 +73,7 @@ describe("Deve retornar testes de unidade de rota", () => {
     RotaController.listarRotas = jest.fn().mockReturnValue(listaRotas);
 
     const retorno = RotaController.listarRotas();
-    expect(retorno[0]).toHaveProperty("rota","rodrigo")
+    expect(retorno[0]).toHaveProperty("rota","rodrigo");
   })
 
   it("Deve retornar a rota ao busca-la por ID", () => {
@@ -88,9 +88,9 @@ describe("Deve retornar testes de unidade de rota", () => {
       verbo_put: true
     }
     
-    RotaController.listarPorId = jest.fn().mockReturnValue(rotaId)
+    RotaController.listarPorId = jest.fn().mockReturnValue(rotaId);
 
     const retorno = RotaController.listarPorId();
-    expect(retorno.rota).toEqual("xamuel")
+    expect(retorno.rota).toEqual("xamuel");
   })
 })

@@ -1,56 +1,52 @@
 import { describe, expect, it, jest, beforeEach, afterEach } from "@jest/globals";
 import GrupoUsuario from "../../models/GrupoUsuario.js";
-import GrupoPortaController from "../../controllers/grupoUsuarioController.js";
+import GrupoUsuarioController from "../../controllers/grupoUsuarioController.js";
 
 describe("Testes unitários do modelo Grupo Usuario", () => {
 
   afterEach(() => jest.clearAllMocks());
 
   it("Deve retornar verdadeiro ao cadastrar um grupo de Usuario e compará-lo com o método direto do controller", () => {
-    const novoGrupoPorta = {
+    const novoGrupoUsuario = {
       nome: "Grupo Teste",
       descricao: "Descrição do Grupo Teste",
       ativo: true,
-      portas: [],
-      aberto: false,
+      rotas: []
     };
 
-    const grupoUsuarioInstancia = new GrupoUsuario (novoGrupoUsuario);
+    const grupoUsuarioInstancia = new GrupoUsuario(novoGrupoUsuario);
 
-    GrupoPortaController.cadastrarGrupoUsuario = jest.fn().mockReturnValue(novoGrupoUsuario);
+    GrupoUsuarioController.cadastrarGrupoUsuario = jest.fn().mockReturnValue(novoGrupoUsuario);
 
     const retorno = GrupoUsuarioController.cadastrarGrupoUsuario();
     expect(retorno.nome).toEqual(grupoUsuarioInstancia.nome);
   });
 
   it("Deve retornar uma lista de grupos de Usuario", () => {
-    const listaGrupoUsuariov = [
+    const listaGrupoUsuarios = [
       {
         nome: "Grupo 1",
         descricao: "Descrição do Grupo 1",
         ativo: true,
-        Usuario: [],
-        aberto: false,
+        rotas: [],
       },
       {
         nome: "Grupo 2",
         descricao: "Descrição do Grupo 2",
         ativo: true,
-        Usuario: [],
-        aberto: false,
+        rotas: [],
       },
       {
         nome: "Grupo 3",
         descricao: "Descrição do Grupo 3",
         ativo: true,
-        Usuario: [],
-        aberto: false,
+        rotas: [],
       },
     ];
 
-    GrupoUsuarioController.listarGrupoUsuario = jest.fn().mockReturnValue(listaGrupoUsuario);
+    GrupoUsuarioController.listarGrupoUsuarios = jest.fn().mockReturnValue(listaGrupoUsuarios);
 
-    const retorno = GrupoUsuarioController.listarGruposUsuario();
+    const retorno = GrupoUsuarioController.listarGrupoUsuarios();
     expect(retorno[0]).toHaveProperty("nome", "Grupo 1");
   });
 
@@ -59,13 +55,12 @@ describe("Testes unitários do modelo Grupo Usuario", () => {
       nome: "Grupo Teste",
       descricao: "Descrição do Grupo Teste",
       ativo: true,
-      Usuario: [],
-      aberto: false,
+      rotas: []
     };
 
-    GrupoUsuarioController.listarGrupoUsuarioPorId = jest.fn().mockReturnValue(grupoUsuarioId);
+    GrupoUsuarioController.listarPorId = jest.fn().mockReturnValue(grupoUsuarioId);
 
-    const retorno = GrupoUsuarioController.listarGrupoPortaPorId();
+    const retorno = GrupoUsuarioController.listarPorId();
     expect(retorno.nome).toEqual("Grupo Teste");
   });
 });

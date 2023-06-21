@@ -6,12 +6,11 @@ export default class PortaController {
 
     static listarPorta = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("portas", "get", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("portas", "get", req, res) !== false) {
                 return;
-              } 
+            }
             const descricao = req.query.descricao;
             const ambiente = req.query.ambiente;
-            const ativo = req.query.ativo;
             const page = req.query.page;
             const perPage = req.query.perPage;
 
@@ -24,29 +23,12 @@ export default class PortaController {
                 const porta = await Porta.paginate({ descricao: new RegExp(descricao, "i") }, option);
                 const resultPortas = JSON.parse(JSON.stringify(porta));
                 return res.status(200).json(resultPortas);
-            }
-
-            if (ambiente) {
-                const porta = await Porta.paginate({ descricao: new RegExp(ambiente, "i") }, option);
+            } else {
+                const porta = await Porta.paginate({}, option);
                 const resultPortas = JSON.parse(JSON.stringify(porta));
                 return res.status(200).json(resultPortas);
             }
 
-            if (ativo) {
-                const porta = await Porta.paginate({ ativo: ativo }, option);
-                const resultPortas = JSON.parse(JSON.stringify(porta));
-                return res.status(200).json(resultPortas);
-            }
-
-            if (descricao && ambiente) {
-                const porta = await Porta.paginate({ $and: [{ descricao: new RegExp(descricao, "i") }, { ambiente: new RegExp(ambiente, "i") }] }, option);
-                const resultPortas = JSON.parse(JSON.stringify(porta));
-                return res.status(200).json(resultPortas);
-            }
-
-            const porta = await Porta.paginate({}, option);
-            const resultPortas = JSON.parse(JSON.stringify(porta));
-            return res.status(200).json(resultPortas);
 
         } catch (erro) {
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
@@ -55,9 +37,9 @@ export default class PortaController {
 
     static listarPortaPorId = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("portas:id", "get", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("portas:id", "get", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
             await Porta.findById(id).then((portas) => {
                 if (portas) {
@@ -75,9 +57,9 @@ export default class PortaController {
 
     static cadastrarPorta = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("portas", "post", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("portas", "post", req, res) !== false) {
                 return;
-              } 
+            }
             const porta = new Porta(req.body);
 
             await porta.save().then((porta) => {
@@ -93,17 +75,18 @@ export default class PortaController {
 
     static atualizarPatch = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("portas:id", "patch", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("portas:id", "patch", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
             const corpo = req.body;
 
             await Porta.findByIdAndUpdate(id, corpo).then((porta) => {
                 if (Object.keys(corpo).length < 1) {
                     return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+                } else {
+                    return res.status(200).json({ message: "Porta atualizada com sucesso" })
                 }
-                return res.status(200).json({ message: "Porta atualizada com sucesso" })
             }).catch((error) => {
                 return res.status(400).json({ message: `Erro ao atualizar Porta - ${error.message}` })
             })
@@ -115,17 +98,18 @@ export default class PortaController {
 
     static atualizarPut = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("portas:id", "put", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("portas:id", "put", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
             const corpo = req.body;
 
             await Porta.findOneAndReplace({ _id: id }, corpo, { omitUndefined: false }).then((porta) => {
                 if (Object.keys(corpo).length < 1) {
                     return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+                } else {
+                    return res.status(200).json({ message: "Porta atualizada com sucesso" })
                 }
-                return res.status(200).json({ message: "Porta atualizada com sucesso" })
             }).catch((error) => {
                 return res.status(400).json({ message: `Erro ao atualizar porta - ${error.message}` })
             })
@@ -136,9 +120,9 @@ export default class PortaController {
 
     static deletePorta = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("portas:id", "delete", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("portas:id", "delete", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
 
             await Porta.findByIdAndDelete(id).then((porta) => {

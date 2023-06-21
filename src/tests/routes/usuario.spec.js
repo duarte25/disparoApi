@@ -8,7 +8,7 @@ let token;
 
 describe("Teste de integração da model Usuário", () => {
   beforeEach(() => {
-    const port = 3022;
+    const port = 3004;
     server = app.listen(port);
   });
 
@@ -33,7 +33,7 @@ describe("Teste de integração da model Usuário", () => {
 
     token = dados._body.token;
 
-    expect(dados._body.user.nome).toEqual("mateus oliveira");
+    expect(dados._body.user.nome).toEqual("Dev oliveira");
     expect(token).toEqual(dados._body.token);
 
   })
@@ -45,7 +45,7 @@ describe("Teste de integração da model Usuário", () => {
       .expect(200)
       .set("Authorization", `Bearer ${token}`)
 
-    expect(dados._body.docs[0].nome).toEqual("mateus oliveira")
+    expect(dados._body.docs[0].nome).toEqual("Dev oliveira")
 
   })
   let idusuario;

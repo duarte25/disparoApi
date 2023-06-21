@@ -9,7 +9,7 @@ describe("Testes na rota de login da aplicação ", () => {
   let token;
 
   beforeEach(() => {
-    const port = 3079;
+    const port = 3001;
     server = app.listen(port);
   });
 
@@ -33,7 +33,7 @@ describe("Testes na rota de login da aplicação ", () => {
 
     token = dados._body.token;
   
-  expect(dados._body.user.nome).toEqual("mateus oliveira");
+  expect(dados._body.user.nome).toEqual("Dev oliveira");
   expect(token).toEqual(dados._body.token);
   })
 })

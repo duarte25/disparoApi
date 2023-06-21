@@ -5,12 +5,10 @@ import AuthPermission from "../middlewares/AuthPermission.js"
 export default class GrupoPortaController {
     static listarGrupoPortas = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoPortas", "get", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoPortas", "get", req, res) !== false) {
                 return;
-              } 
+            }
             const nome = req.query.nome;
-            const descricao = req.query.descricao;
-            const ativo = req.query.ativo;
             const page = req.query.page;
             const perPage = req.query.perPage;
 
@@ -19,35 +17,17 @@ export default class GrupoPortaController {
                 limit: parseInt(perPage) > 10 ? 10 : parseInt(perPage) || 10
             };
 
-            if (nome && descricao) {
-                const grupoP = await GrupoPorta.paginate({ $and: [{ nome: new RegExp(nome, "i") }, { descricao: new RegExp(descricao, "i") }] }, options);
-                const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
-                return res.status(200).json(resultGrupoPorta);
-            }
-
             if (nome) {
                 //retorno da busca por nome do grupo porta
                 const grupoP = await GrupoPorta.paginate({ nome: new RegExp(nome, "i") }, options);
                 const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
                 return res.status(200).json(resultGrupoPorta);
-            }
-
-            if (descricao) {
-                const grupoP = await GrupoPorta.paginate({ descricao: new RegExp(descricao, "i") }, options);
+            } else {
+                const grupoP = await GrupoPorta.paginate({}, options);
                 const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
-                return res.status(200).json(resultGrupoPorta);
+                return res.status(200).json(resultGrupoPorta)
             }
 
-            if (ativo) {
-                const grupoP = await GrupoPorta.paginate({ ativo: ativo }, options);
-                const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
-                return res.status(200).json(resultGrupoPorta);
-            }
-
-
-            const grupoP = await GrupoPorta.paginate({}, options);
-            const resultGrupoPorta = JSON.parse(JSON.stringify(grupoP));
-            return res.status(200).json(resultGrupoPorta)
 
         } catch (erro) {
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" });
@@ -56,9 +36,9 @@ export default class GrupoPortaController {
 
     static listarGrupoPortaId = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoPortas:id", "get", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoPortas:id", "get", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
 
             await GrupoPorta.findById(id).then((grupoP) => {
@@ -78,9 +58,9 @@ export default class GrupoPortaController {
 
     static cadastrarGrupoPorta = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoPortas", "post", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoPortas", "post", req, res) !== false) {
                 return;
-              } 
+            }
             const grupoP = new GrupoPorta(req.body);
 
             await grupoP.save().then((grupoP) => {
@@ -97,17 +77,18 @@ export default class GrupoPortaController {
 
     static atualizarPatch = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoPortas:id", "patch", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoPortas:id", "patch", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
             const corpo = req.body;
 
             await GrupoPorta.findByIdAndUpdate(id, corpo).then((grupoP) => {
                 if (Object.keys(corpo).length < 1) {
                     return res.status(400).json({ messagem: "Não existe dados para ser atualizado" })
+                } else {
+                    return res.status(200).json({ message: "Grupo Porta atualizada com sucesso!" })
                 }
-                return res.status(200).json({ message: "Grupo Porta atualizada com sucesso!" })
             }).catch((error) => {
                 return res.status(400).json({ message: `Erro ao atualizar - ${error.message}` })
             })
@@ -119,17 +100,18 @@ export default class GrupoPortaController {
 
     static atualizarPut = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoPortas:id", "put", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoPortas:id", "put", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
             const corpo = req.body;
 
             await GrupoPorta.findOneAndReplace({ _id: id }, corpo, { omitUndefined: false }).then((grupoP) => {
                 if (Object.keys(corpo).length < 1) {
                     return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+                } else {
+                    return res.status(200).json({ message: "Grupo Porta atualizada com sucesso" })
                 }
-                return res.status(200).json({ message: "Grupo Porta atualizada com sucesso" })
             }).catch((error) => {
                 return res.status(400).json({ message: `Erro ao atualizar Grupo Porta - ${error.message}` })
             })
@@ -141,9 +123,9 @@ export default class GrupoPortaController {
 
     static deletarGrupoPorta = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoPortas:id", "delete", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoPortas:id", "delete", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
 
             await GrupoPorta.findByIdAndDelete(id).then((grupoP) => {

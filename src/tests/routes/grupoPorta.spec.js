@@ -9,7 +9,7 @@ let token;
 describe("Testes de integração da model GrupoPorta", () => {
   let id;
   beforeEach(() => {
-    const port = 3000;
+    const port = 3006;
     server = app.listen(port);
   });
 
@@ -33,7 +33,7 @@ describe("Testes de integração da model GrupoPorta", () => {
 
     token = dados._body.token;
 
-    expect(dados._body.user.nome).toEqual("mateus oliveira");
+    expect(dados._body.user.nome).toEqual("Dev oliveira");
     expect(token).toEqual(dados._body.token);
 
   })
@@ -42,7 +42,7 @@ describe("Testes de integração da model GrupoPorta", () => {
     const response = await request(app).get('/grupoPortas')
       .set("Authorization", `Bearer ${token}`);
     expect(response.status).toBe(200);
-    expect(response.body.docs[2].nome).toEqual("Professores Matemática");
+    expect(response.body.docs[0].nome).toEqual("Professores ADS");
   });
 
   it("Deve criar um novo grupo de porta", async () => {
@@ -79,7 +79,7 @@ describe("Testes de integração da model GrupoPorta", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
-    expect(response.body.message).toBe("grupoPortas validation failed: nome: Path `nome` is required.");
+    expect(response.body.message).toBe("grupoPortas validation failed: nome: Nome é obrigatório");
   });
 
   it("Deve retornar um grupo de porta específico", async () => {
@@ -122,7 +122,6 @@ describe("Testes de integração da model GrupoPorta", () => {
   });
 
   it("Deve retornar um erro ao atualizar um grupo de porta com ID inválido", async () => {
-    const grupoPortaId = "647a8d6baca74162be616";
     const dadosAtualizados = {
       nome: "Grupo Atualizado",
       descricao: "Nova descrição do grupo",

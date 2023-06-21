@@ -5,12 +5,10 @@ import AuthPermission from "../middlewares/AuthPermission.js"
 export default class GrupoUsuarioController {
     static listarGrupoUsuarios = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoUsuarios", "get", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoUsuarios", "get", req, res) !== false) {
                 return;
-              } 
+            }
             const nome = req.query.nome;
-            const descricao = req.query.descricao;
-            const ativo = req.query.ativo;
             const page = req.query.page;
             const perPage = req.query.perPage;
 
@@ -19,34 +17,16 @@ export default class GrupoUsuarioController {
                 limit: parseInt(perPage) || 10 ? 10 : parseInt(perPage) || 10
             }
 
-            if (nome && descricao) {
-                const grupoUsuarios = await GrupoUsuario.paginate({ $and: [{ nome: new RegExp(nome, "i") }, { descricao: new RegExp(descricao, "i") }] }, options);
-                const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
-                return res.status(200).json(grupoUsuariosResult);
-            }
-
             if (nome) {
                 const grupoUsuarios = await GrupoUsuario.paginate({ nome: new RegExp(nome, "i") }, options);
                 const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
                 return res.status(200).json(grupoUsuariosResult);
-            }
-
-            if (descricao) {
-                const grupoUsuarios = await GrupoUsuario.paginate({ descricao: new RegExp(descricao, "i") }, options);
+            } else {
+                const grupoUsuarios = await GrupoUsuario.paginate({}, options);
                 const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
                 return res.status(200).json(grupoUsuariosResult);
             }
 
-            if (ativo) {
-                const grupoUsuarios = await GrupoUsuario.paginate({ ativo: ativo }, options);
-                const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
-                return res.status(200).json(grupoUsuariosResult);
-            }
-
-
-            const grupoUsuarios = await GrupoUsuario.paginate({}, options);
-            const grupoUsuariosResult = JSON.parse(JSON.stringify(grupoUsuarios));
-            return res.status(200).json(grupoUsuariosResult);
 
         } catch (erro) {
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
@@ -55,9 +35,9 @@ export default class GrupoUsuarioController {
 
     static listarPorId = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "get", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "get", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
 
             await GrupoUsuario.findById(id).then((grupoUsuarios) => {
@@ -67,7 +47,7 @@ export default class GrupoUsuarioController {
                     return res.status(404).json({ error: true, code: 404, message: "Grupo de Usuario não encontrado" })
                 }
             }).catch((erro) => {
-                return res.status(400).json({ error: true, code: 400, message: "Erro interno do servidor" })
+                return res.status(400).json({ error: true, code: 400, message: "ID inválido" })
             })
         } catch (erro) {
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
@@ -76,9 +56,9 @@ export default class GrupoUsuarioController {
 
     static cadastarGrupoUsuario = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoUsuarios", "post", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoUsuarios", "post", req, res) !== false) {
                 return;
-              } 
+            }
             const grupoUsuario = new GrupoUsuario(req.body);
 
             await grupoUsuario.save().then((grupoUsuario) => {
@@ -94,17 +74,18 @@ export default class GrupoUsuarioController {
 
     static atualizarPut = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "put", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "put", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
             const corpo = req.body;
 
             await GrupoUsuario.findOneAndReplace({ _id: id }, corpo, { omitUndefined: false }).then((rota) => {
                 if (Object.keys(corpo).length < 1) {
                     return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+                } else {
+                    return res.status(200).json({ message: "Grupo de Usuário atualizado com sucesso" })
                 }
-                return res.status(200).json({ message: "Grupo de Usuário atualizado com sucesso" })
             }).catch((error) => {
                 return res.status(400).json({ message: `Erro ao atualizar grupo de usuário - ${error.message}` })
             })
@@ -116,17 +97,18 @@ export default class GrupoUsuarioController {
 
     static atualizarPatch = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "patch", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "patch", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
             const corpo = req.body;
 
             await GrupoUsuario.findByIdAndUpdate(id, corpo).then((grupoUsuarios) => {
                 if (Object.keys(corpo).length < 1) {
                     return res.status(400).json({ message: "Nenhum dado a ser atualizado" })
+                } else {
+                    return res.status(200).json({ message: 'Grupo de usuarios atualizado com Sucesso' })
                 }
-                return res.status(200).json({ message: 'Grupo de usuarios atualizado com Sucesso' })
             }).catch((error) => {
                 return res.status(400).json({ message: `Erro ao atualizar Grupo de Usuarios - ${error.message}` })
             })
@@ -138,9 +120,9 @@ export default class GrupoUsuarioController {
 
     static deletarGrupoUsuarios = async (req, res) => {
         try {
-            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "delete", req,res) !== false) {
+            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "delete", req, res) !== false) {
                 return;
-              } 
+            }
             const id = req.params.id;
 
             await GrupoUsuario.findByIdAndDelete(id).then((grupoUsuarios) => {
