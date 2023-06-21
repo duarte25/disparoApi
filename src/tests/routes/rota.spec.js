@@ -101,7 +101,7 @@ describe("Testes de integração da model Rota", () => {
 
   it("Deve realizar uma busca por id da rota mateus", async () => {
     const dados = await request(app)
-      .get("/rotas/" + id)
+      .get(`/rotas/${id}`)
       .accept("Content-Type", "application/json")
       .set("Authorization", `Bearer ${token}`)
       .expect(200);

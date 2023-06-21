@@ -1,8 +1,13 @@
 import GrupoUsuario from "../models/GrupoUsuario.js"
+import AuthPermission from "../middlewares/AuthPermission.js"
+
 
 export default class GrupoUsuarioController {
     static listarGrupoUsuarios = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoUsuarios", "get", req,res) !== false) {
+                return;
+              } 
             const nome = req.query.nome;
             const descricao = req.query.descricao;
             const ativo = req.query.ativo;
@@ -50,6 +55,9 @@ export default class GrupoUsuarioController {
 
     static listarPorId = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "get", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
 
             await GrupoUsuario.findById(id).then((grupoUsuarios) => {
@@ -68,6 +76,9 @@ export default class GrupoUsuarioController {
 
     static cadastarGrupoUsuario = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoUsuarios", "post", req,res) !== false) {
+                return;
+              } 
             const grupoUsuario = new GrupoUsuario(req.body);
 
             await grupoUsuario.save().then((grupoUsuario) => {
@@ -83,6 +94,9 @@ export default class GrupoUsuarioController {
 
     static atualizarPut = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "put", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
             const corpo = req.body;
 
@@ -102,6 +116,9 @@ export default class GrupoUsuarioController {
 
     static atualizarPatch = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "patch", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
             const corpo = req.body;
 
@@ -121,6 +138,9 @@ export default class GrupoUsuarioController {
 
     static deletarGrupoUsuarios = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoUsuarios:id", "delete", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
 
             await GrupoUsuario.findByIdAndDelete(id).then((grupoUsuarios) => {

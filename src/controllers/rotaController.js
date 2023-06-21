@@ -38,6 +38,9 @@ export default class RotaController {
 
   static listarPorId = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("rotas:id", "get", req,res) !== false) {
+        return;
+      } 
       const id = req.params.id;
 
       await Rota.findById(id).then((rota) => {
@@ -57,6 +60,11 @@ export default class RotaController {
 
   static cadastrarRota = async (req, res) => {
     try {
+
+      if (await AuthPermission.verifyPermission("rotas", "post", req,res) !== false) {
+        return;
+      }
+
       const rota = new Rota(req.body);
 
       await rota.save().then((rota) => {
@@ -72,6 +80,9 @@ export default class RotaController {
 
   static atualizarPatch = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("rotas:id", "patch", req,res) !== false) {
+        return;
+      } 
       const id = req.params.id;
       const corpo = req.body;
 
@@ -91,6 +102,9 @@ export default class RotaController {
 
   static atualizarPut = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("rotas:id", "put", req,res) !== false) {
+        return;
+      } 
       const id = req.params.id;
       const corpo = req.body;
 
@@ -110,6 +124,9 @@ export default class RotaController {
 
   static deletarRota = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("rotas:id", "delete", req,res) !== false) {
+        return;
+      } 
       const id = req.params.id;
 
       await Rota.findByIdAndDelete(id).then((rota) => {

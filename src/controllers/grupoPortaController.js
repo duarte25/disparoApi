@@ -1,8 +1,13 @@
 import GrupoPorta from "../models/GrupoPorta.js";
+import AuthPermission from "../middlewares/AuthPermission.js"
+
 
 export default class GrupoPortaController {
     static listarGrupoPortas = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoPortas", "get", req,res) !== false) {
+                return;
+              } 
             const nome = req.query.nome;
             const descricao = req.query.descricao;
             const ativo = req.query.ativo;
@@ -51,6 +56,9 @@ export default class GrupoPortaController {
 
     static listarGrupoPortaId = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoPortas:id", "get", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
 
             await GrupoPorta.findById(id).then((grupoP) => {
@@ -70,6 +78,9 @@ export default class GrupoPortaController {
 
     static cadastrarGrupoPorta = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoPortas", "post", req,res) !== false) {
+                return;
+              } 
             const grupoP = new GrupoPorta(req.body);
 
             await grupoP.save().then((grupoP) => {
@@ -86,6 +97,9 @@ export default class GrupoPortaController {
 
     static atualizarPatch = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoPortas:id", "patch", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
             const corpo = req.body;
 
@@ -105,6 +119,9 @@ export default class GrupoPortaController {
 
     static atualizarPut = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoPortas:id", "put", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
             const corpo = req.body;
 
@@ -124,6 +141,9 @@ export default class GrupoPortaController {
 
     static deletarGrupoPorta = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("grupoPortas:id", "delete", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
 
             await GrupoPorta.findByIdAndDelete(id).then((grupoP) => {

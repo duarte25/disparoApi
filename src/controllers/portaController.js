@@ -1,9 +1,14 @@
 import Porta from "../models/Porta.js";
+import AuthPermission from "../middlewares/AuthPermission.js"
+
 
 export default class PortaController {
 
     static listarPorta = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("portas", "get", req,res) !== false) {
+                return;
+              } 
             const descricao = req.query.descricao;
             const ambiente = req.query.ambiente;
             const ativo = req.query.ativo;
@@ -50,6 +55,9 @@ export default class PortaController {
 
     static listarPortaPorId = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("portas:id", "get", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
             await Porta.findById(id).then((portas) => {
                 if (portas) {
@@ -67,6 +75,9 @@ export default class PortaController {
 
     static cadastrarPorta = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("portas", "post", req,res) !== false) {
+                return;
+              } 
             const porta = new Porta(req.body);
 
             await porta.save().then((porta) => {
@@ -82,6 +93,9 @@ export default class PortaController {
 
     static atualizarPatch = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("portas:id", "patch", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
             const corpo = req.body;
 
@@ -101,6 +115,9 @@ export default class PortaController {
 
     static atualizarPut = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("portas:id", "put", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
             const corpo = req.body;
 
@@ -119,6 +136,9 @@ export default class PortaController {
 
     static deletePorta = async (req, res) => {
         try {
+            if (await AuthPermission.verifyPermission("portas:id", "delete", req,res) !== false) {
+                return;
+              } 
             const id = req.params.id;
 
             await Porta.findByIdAndDelete(id).then((porta) => {

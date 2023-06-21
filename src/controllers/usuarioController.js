@@ -1,10 +1,14 @@
 import usuarios from "../models/Usuario.js";
 import grupoUsuario from "../models/GrupoUsuario.js";
 import grupoPorta from "../models/GrupoPorta.js";
+import AuthPermission from "../middlewares/AuthPermission.js"
 
 export default class UsuarioController {
   static listarUsuarios = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("usuarios", "get", req,res) !== false) {
+        return;
+      } 
       const nome = req.query.nome;
       const page = req.query.page;
       const perPage = req.query.perPage;
@@ -43,12 +47,16 @@ export default class UsuarioController {
       return res.status(200).json(user);
     }
     catch (error) {
+      console.log(error)
       return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
     }
   }
 
   static listarUsuarioPorId = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("usuarios:id", "get", req,res) !== false) {
+        return;
+      } 
       const id = req.params.id;
 
       await usuarios.findById(id).then((usuario) => {
@@ -70,6 +78,9 @@ export default class UsuarioController {
 
   static cadastrarUsuario = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("usuarios", "post", req,res) !== false) {
+        return;
+      } 
       const usuario = new usuarios(req.body);
 
       await usuario.save().then((usuario) => {
@@ -86,6 +97,9 @@ export default class UsuarioController {
 
   static atualizarPatch = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("usuarios:id", "patch", req,res) !== false) {
+        return;
+      } 
       const id = req.params.id;
       const corpo = req.body;
 
@@ -107,6 +121,9 @@ export default class UsuarioController {
 
   static atualizarPut = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("usuarios:id", "put", req,res) !== false) {
+        return;
+      } 
       const id = req.params.id;
       const corpo = req.body;
 
@@ -127,6 +144,9 @@ export default class UsuarioController {
 
   static deletarUsuario = async (req, res) => {
     try {
+      if (await AuthPermission.verifyPermission("usuarios:id", "delete", req,res) !== false) {
+        return;
+      } 
       const id = req.params.id;
 
       await usuarios.findByIdAndDelete(id).then((usuario) => {
@@ -139,7 +159,5 @@ export default class UsuarioController {
       return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
     }
   }
-
-
 
 }
