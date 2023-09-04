@@ -327,7 +327,73 @@ const router = express.Router();
  *                  error: 
  *                    type: boolean
  *                    example: true
- *                  code: 
+ *                  code:
+ *                    type: integer
+ *                    example: 500
+ *                  message:
+ *                    type: string
+ *                    example: "Erro interno do servidor"
+ *    delete:
+ *      summary: Deleta todos os atributos de um usuário existente no banco de dados.
+ *      tags:
+ *        - Usuarios
+ *      security:
+ *        - bearerAuth: []
+ *      description: Esta função é responsável por deletar um usuário existente no banco de dados, verificando previamente se o usuário tem permissão para realizar a ação
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UsuarioSemId'
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          description: ID do usuário a ser deletado
+ *          required: true
+ *          schema:
+ *            type: string
+ *      responses:
+ *        '200':
+ *          description: Usuário deletado com sucesso
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  code:
+ *                    type: integer
+ *                    example: 200
+ *                  message:
+ *                    type: string
+ *                    example: "Usuário deletado com sucesso"
+ *        '400':
+ *          description: Erro ao deletar o usuário
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: boolean
+ *                    example: true
+ *                  code:
+ *                    type: integer
+ *                    example: 400
+ *                  message:
+ *                    type: string
+ *                    example: "Mensagem de erro"
+ *        '500':
+ *          description: Erro interno do servidor
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: boolean
+ *                    example: true
+ *                  code:
  *                    type: integer
  *                    example: 500
  *                  message:
@@ -343,5 +409,5 @@ router
   .put("/usuarios/:id", AuthMiddleware, UsuarioController.atualizarPut)
   .delete("/usuarios/:id", AuthMiddleware, UsuarioController.deletarUsuario)
   
- 
+
 export default router;

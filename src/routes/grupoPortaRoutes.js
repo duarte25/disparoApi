@@ -16,10 +16,10 @@ const router = express.Router();
  *        - bearerAuth: []
  *      parameters:
  *        - in: query
- *          name: Nome do usuário
+ *          name: Nome do grupo de portas
  *          schema:
  *            type: string
- *          description: Nome do usuário para filtrar
+ *          description: Nome do grupo de portas para filtrar
  *        - in: query
  *          name: page 
  *          schema:
@@ -213,7 +213,7 @@ const router = express.Router();
  *              schema:
  *                $ref: '#/components/schemas/GrupoPortas'
  *        '400':
- *          description: Erro ao atualizar a rota
+ *          description: Erro ao atualizar  grupo de portas
  *          content:
  *            application/json:
  *              schema:
@@ -272,7 +272,7 @@ const router = express.Router();
  *              schema:
  *                $ref: '#/components/schemas/GrupoPortas'
  *        '400':
- *          description: Erro ao atualizar a rota
+ *          description: Erro ao atualizar grupo de portas
  *          content:
  *            application/json:
  *              schema:
@@ -303,9 +303,77 @@ const router = express.Router();
  *                  message:
  *                    type: string
  *                    example: "Erro interno do servidor"
- *    
- *  
+ *
+ *    delete:
+ *      summary: Deleta todos os atributos de um grupo de portas existente no banco de dados.
+ *      tags:
+ *        - Grupo de Portas
+ *      security:
+ *        - bearerAuth: []
+ *      description: Esta função é responsável por deletar um grupo de portas existente no banco de dados, verificando previamente se o usuário tem permissão para realizar a ação
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/GrupoPortasSemId'
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          description: ID do grupo de portas a ser deletada
+ *          required: true
+ *          schema:
+ *            type: string
+ *      responses:
+ *        '200':
+ *          description: Grupo de portas deletado com sucesso
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  code:
+ *                    type: integer
+ *                    example: 200
+ *                  message:
+ *                    type: string
+ *                    example: "grupo de portas deletado com sucesso"
+ *        '400':
+ *          description: Erro ao deletar grupo de portas
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: boolean
+ *                    example: true
+ *                  code:
+ *                    type: integer
+ *                    example: 400
+ *                  message:
+ *                    type: string
+ *                    example: "Mensagem de erro"
+ *        '500':
+ *          description: Erro interno do servidor
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: boolean
+ *                    example: true
+ *                  code:
+ *                    type: integer
+ *                    example: 500
+ *                  message:
+ *                    type: string
+ *                    example: "Erro interno do servidor"
  */
+
+
+
 
 
 router
