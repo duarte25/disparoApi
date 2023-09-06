@@ -311,6 +311,72 @@ const router = express.Router();
  *                  message:
  *                    type: string
  *                    example: "Erro interno do servidor"
+ *    delete:
+ *      summary: Deleta todos os atributos de uma porta existente no banco de dados.
+ *      tags:
+ *        - Portas
+ *      security:
+ *        - bearerAuth: []
+ *      description: Esta função é responsável por uma porta existente no banco de dados, verificando previamente se o usuário tem permissão para realizar a ação
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/PortaSemId'
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          description: ID da porta a ser deletada
+ *          required: true
+ *          schema:
+ *            type: string
+ *      responses:
+ *        '200':
+ *          description: Porta deletado com sucesso
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  code:
+ *                    type: integer
+ *                    example: 200
+ *                  message:
+ *                    type: string
+ *                    example: "Porta deletada com sucesso"
+ *        '400':
+ *          description: Erro ao deletar a porta
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: boolean
+ *                    example: true
+ *                  code:
+ *                    type: integer
+ *                    example: 400
+ *                  message:
+ *                    type: string
+ *                    example: "Mensagem de erro"
+ *        '500':
+ *          description: Erro interno do servidor
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: boolean
+ *                    example: true
+ *                  code:
+ *                    type: integer
+ *                    example: 500
+ *                  message:
+ *                    type: string
+ *                    example: "Erro interno do servidor"
  */
 
 router
