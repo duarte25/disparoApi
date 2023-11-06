@@ -5,6 +5,7 @@ import grupoUsuarios from "./grupoUsuarioRoutes.js";
 import grupoPortas from "./grupoPortaRoutes.js";
 import rotas from "./rotaRoutes.js";
 import login from "./loginRoutes.js";
+import enviarEmail from "./enviaremailRoutes.js"
 
 // Aqui vai estar todos os componentes para utilizar no Swagger.
 
@@ -304,7 +305,8 @@ const routes = (app) => {
     grupoUsuarios,
     grupoPortas,
     rotas,
-    login
+    login,
+    enviarEmail
   )
 
 }
