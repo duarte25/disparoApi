@@ -2,6 +2,8 @@ import usuarios from "../models/Usuario.js";
 import grupoUsuario from "../models/GrupoUsuario.js";
 import grupoPorta from "../models/GrupoPorta.js";
 import AuthPermission from "../middlewares/AuthPermission.js"
+import enviaemail from "./enviaremailController.js"
+import SendMail from '../utils/SendMail.js';
 
 export default class UsuarioController {
   static listarUsuarios = async (req, res) => {
@@ -77,6 +79,7 @@ export default class UsuarioController {
     }
   }
 
+  //CADASTAR USUARIO ----------------------------------------------------------------------------------------------
   static cadastrarUsuario = async (req, res) => {
     try {
       if (await AuthPermission.verifyPermission("usuarios", "post", req, res) !== false) {
@@ -84,15 +87,47 @@ export default class UsuarioController {
       }
       const usuario = new usuarios(req.body);
 
-      await usuario.save().then((usuario) => {
-        return res.status(201).send(usuario.toJSON());
+      const userExist = await usuarios.findOne({ email: req.body.email });
 
+      if (userExist) {
+        return res.status(400).json({ code: 400, message: "E-mail já cadastrado!" })
+      }
+
+      // desativar o usuario
+
+
+      // cria função para gerar um código aleatório de 4 caracteres maiúsculos
+      async function geraCodigo() {
+        let codigo = "";
+        let caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*()0123456789";
+        for (let i = 0; i < 4; i++) {
+          codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        }
+        return codigo;
+      }
+
+      const codigoAtivacao = await geraCodigo()
+
+      usuario.ativo = false;
+      usuario.codigo_confirma_email = codigoAtivacao;
+
+      await usuario.save().then((usuario) => {
+        // enviar email de confirmação de cadastro
+        const infoEmail = {}
+        infoEmail.to = usuario.email;
+        infoEmail.subject = "Envio do código para confirmação de cadastro";
+        infoEmail.text = "Olá " + usuario.nome + ",\n\n" + "Seu código de confirmação de cadastro é: " + usuario.codigo_confirma_email + "\n\n" + "Atenciosamente,\n" + "Equipe de suporte";
+        infoEmail.html = "<p>Olá " + usuario.nome + ",</p><p>Seu código de confirmação de cadastro é: <strong>" + usuario.codigo_confirma_email + "</strong></p><p>Atenciosamente,</p><p>Equipe de suporte</p>";
+
+        enviaemail(infoEmail);
+
+        return res.status(201).send(usuario.toJSON());
       }).catch((error) => {
         return res.status(400).json({ message: error.message });
       })
-
     } catch (error) {
-      return res.status(500).json({ error: true, code: 500, message: "Erro interno do servidor" })
+      SendMail.enviaEmailError(err, new URL(import.meta.url).pathname, new Date(), req);
+      return res.status(500).json({ code: 500, message: err.message });
     }
   }
 

@@ -1,7 +1,4 @@
-import User from '../models/Usuario.js';
-import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import crypto from 'crypto';
 import SendMail from '../utils/SendMail.js';
 import { URL } from 'url';
 

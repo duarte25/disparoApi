@@ -31,7 +31,8 @@ class recuperasenhaController {
       } else {
         const alterar = User.findByIdAndUpdate(userExist._id, {
           $set: {
-            token: token          }
+            token: token
+          }
         })
         await alterar;
         if (!alterar) {
@@ -39,7 +40,7 @@ class recuperasenhaController {
         } else {
           // enviar o email 
           await enviarEmail(userExist, token)
-          return res.status(200).json({ code: 200, email: userExist.email ,message: 'Token gerado, guardado no banco de dados e enviado por email!' })
+          return res.status(200).json({ code: 200, email: userExist.email, message: 'Token gerado, guardado no banco de dados e enviado por email!' })
         }
       }
     } catch (err) {
@@ -64,7 +65,7 @@ async function enviarEmail(userExist, token) {
         },
       });
 
-       async function hashId () {
+      async function hashId() {
         return crypto.randomBytes(6).toString('hex');
       }
 
@@ -73,7 +74,7 @@ async function enviarEmail(userExist, token) {
         to: userExist.email,
         subject: "Olá, " + userExist.nome + " você solicitou a recuperação de senha!",
         text: "Click no link abaixo para alterar sua senha!",
-        html: "Olá " + userExist.nome + ", você solicitou a recuperação de senha! <br> <a href='" + (process.env.URL_ALTERASENHA + "/alterarsenha/?token=" + token) + "'>Clique aqui para alterar sua senha!</a>",
+        html: "Olá " + userExist.nome + ", você solicitou a recuperação de senha! <br> <a> "+(token)+"</a>",
       });
 
       // console.log("Message sent: %s", info.messageId);

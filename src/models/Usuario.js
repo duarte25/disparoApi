@@ -7,6 +7,8 @@ const usuarioSchema = new mongoose.Schema({
     senha: { type: String, minlength: 8, trim: true, required: [true, 'Senha é obrigatório.'], select: false },
     link_foto: { type: String, trim: true, index: true, },
     ativo: { type: Boolean, required: [true, 'Ativo é obrigatório.'], default: false },
+    token: { type: String, trim: true }, // token unico para recuperação de senha validade 15 minutos
+    codigo_confirma_email: { type: String, select: false, trim: true }, // código para confirmação de email
     rfid: { type: String, trim: true },
     iris: { type: String, trim: true },
     digital: [

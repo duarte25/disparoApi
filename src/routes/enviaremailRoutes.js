@@ -28,6 +28,6 @@ const router = express.Router();
 */
 
 router
-  .post("/enviaremail", enviaremailController.enviarEmail);
+  .post("/enviaremail",  AuthMiddleware, enviaremailController.enviarEmail);
 
 export default router;

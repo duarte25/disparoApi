@@ -1,9 +1,7 @@
 import express from "express";
+import AuthMiddleware from "../middlewares/AuthMiddleware.js";
+import validaUsuario from "../utils/validacoes/validaUsuario.js";
 import alterarsenhaController from "../controllers/alterarsenhaController.js";
-import ValidaUsuario from "../utils/validacoes/validaUsuario.js"
-import dotenv from 'dotenv';
-
-dotenv.config()
 
 const router = express.Router();
 
@@ -39,7 +37,6 @@ const router = express.Router();
 
 
 router
-  .post("/alterarsenha", ValidaUsuario.validarSenha, alterarsenhaController.alterarsenha)
-
+  .post("/alterarsenha", AuthMiddleware, validaUsuario.validarSenha, alterarsenhaController.alterarsenha)
 
 export default router;

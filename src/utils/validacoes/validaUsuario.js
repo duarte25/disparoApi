@@ -17,7 +17,7 @@ class ValidaUsuario {
             }
 
             //verficiar se a senha tem no mínimo 8 caracteres e se tem letras e números e se tem caracteres especiais e se tem letras maiúsculas usando expressão regular
-            if (req.body.senha == null || req.body.senha == undefined || req.body.senha == "" || req.body.senha.length < 8 || !req.body.senha.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+            if (req.body.senha == null || req.body.senha == undefined || req.body.senha == "" || req.body.senha.length < 8) {
                 erros.push({ code: 400, message: "Senha é obrigatória e deve ter no mínimo 8 caracteres, letras maiúsculas, minúsculas, números e caracteres especiais!" })
             }
 
@@ -39,7 +39,7 @@ class ValidaUsuario {
             const erros = [];
             erros.length = 0;
 
-            if (req.body.senha == null || req.body.senha == undefined || req.body.senha == "" || req.body.senha.length < 8 || !req.body.senha.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+            if (req.body.senha == null || req.body.senha == undefined || req.body.senha == "" || req.body.senha.length < 8) {
                 erros.push({ code: 400, message: "Senha é obrigatória e deve ter no mínimo 8 caracteres, letras maiúsculas, minúsculas, números e caracteres especiais!" })
             }
 
@@ -56,14 +56,14 @@ class ValidaUsuario {
         }
     }
 
-// senha não é obrigatória
+    // senha não é obrigatória
     static validarSenhaPatch(req, res, next) {
         try {
             // validar os dados
             const erros = [];
             erros.length = 0;
 
-            if (req.body.senha != null && req.body.senha.length < 8 && !req.body.senha.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+            if (req.body.senha != null && req.body.senha.length < 8) {
                 erros.push({ code: 400, message: "A senha deve ter no mínimo 8 caracteres, letras maiúsculas, minúsculas, números e caracteres especiais!" })
             }
 
