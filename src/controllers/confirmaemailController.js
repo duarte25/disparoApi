@@ -1,7 +1,5 @@
 import User from '../models/Usuario.js';
-import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import crypto from 'crypto';
 import SendMail from '../utils/SendMail.js';
 import { URL } from 'url';
 
@@ -39,7 +37,7 @@ class confirmaemailController {
         infoEmail.text = "Olá " + userExist.nome + ",\n\n" + "Sua conta foi ativa com sucesso" + "\n\n" + "Atenciosamente,\n" + "Equipe de suporte";
         infoEmail.html = "<p>Olá " + userExist.nome + ",</p><p>Sua conta foi ativa com sucesso <strong> </strong></p><p>Atenciosamente,</p><p>Equipe de suporte</p>";
 
-        enviaemail(infoEmail);
+        SendMail.enviaEmail(infoEmail);
 
         return res.status(200).json({ code: 200, email: userExist.email, message: 'Conta ativada, guardado no banco de dados e enviado por email!' })
       }

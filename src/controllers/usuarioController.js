@@ -2,8 +2,8 @@ import usuarios from "../models/Usuario.js";
 import grupoUsuario from "../models/GrupoUsuario.js";
 import grupoPorta from "../models/GrupoPorta.js";
 import AuthPermission from "../middlewares/AuthPermission.js"
-import enviaemail from "./enviaremailController.js"
 import SendMail from '../utils/SendMail.js';
+import senhaHashMiddleware from '../middlewares/senhaHashMiddleware.js';
 
 export default class UsuarioController {
   static listarUsuarios = async (req, res) => {
@@ -79,7 +79,7 @@ export default class UsuarioController {
     }
   }
 
-  //CADASTAR USUARIO ----------------------------------------------------------------------------------------------
+// CADASTAR USUARIO ----------------------------------------------------------------------------------------------
   static cadastrarUsuario = async (req, res) => {
     try {
       if (await AuthPermission.verifyPermission("usuarios", "post", req, res) !== false) {
@@ -87,14 +87,13 @@ export default class UsuarioController {
       }
       const usuario = new usuarios(req.body);
 
-      const userExist = await usuarios.findOne({ email: req.body.email });
 
-      if (userExist) {
+      // Compara se o email de usuario já existe na nossa base
+      const email = await usuarios.findOne({ email: req.body.email });
+
+      if (email) {
         return res.status(400).json({ code: 400, message: "E-mail já cadastrado!" })
       }
-
-      // desativar o usuario
-
 
       // cria função para gerar um código aleatório de 4 caracteres maiúsculos
       async function geraCodigo() {
@@ -106,9 +105,14 @@ export default class UsuarioController {
         return codigo;
       }
 
-      const codigoAtivacao = await geraCodigo()
+      // atribuindo a senha criptografada ao usuario
+      const senhaHash = await senhaHashMiddleware.criptogafar(usuario.senha);
+      usuario.senha = senhaHash;
 
+      // Desativar o usuario 
       usuario.ativo = false;
+      // Setando o codigo ao DB
+      const codigoAtivacao = await geraCodigo()
       usuario.codigo_confirma_email = codigoAtivacao;
 
       await usuario.save().then((usuario) => {
@@ -119,7 +123,11 @@ export default class UsuarioController {
         infoEmail.text = "Olá " + usuario.nome + ",\n\n" + "Seu código de confirmação de cadastro é: " + usuario.codigo_confirma_email + "\n\n" + "Atenciosamente,\n" + "Equipe de suporte";
         infoEmail.html = "<p>Olá " + usuario.nome + ",</p><p>Seu código de confirmação de cadastro é: <strong>" + usuario.codigo_confirma_email + "</strong></p><p>Atenciosamente,</p><p>Equipe de suporte</p>";
 
-        enviaemail(infoEmail);
+        SendMail.enviaEmail(infoEmail);
+
+        //remover senha do retorno
+        usuario.senha = undefined;
+        usuario.codigo_confirma_email = undefined;
 
         return res.status(201).send(usuario.toJSON());
       }).catch((error) => {

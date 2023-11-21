@@ -6,7 +6,6 @@ import SendMail from '../utils/SendMail.js';
 import { URL } from 'url';
 dotenv.config()
 
-
 class UsuarioAlterarSenha {
   static alterarsenha = async (req, res) => {
     try {
